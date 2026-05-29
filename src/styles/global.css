@@ -1,0 +1,258 @@
+:root {
+  --navbar-bg: #ffffff;
+  --border-color: #e2e8f0;
+  --text-color: #0f172a;
+
+  --menu-btn-bg: #0f172ac0;
+  --menu-btn-text: #ffffff;
+  --menu-btn-hover: #0f172a;
+}
+
+/* DARK MODE */
+
+.dark {
+  --navbar-bg: #1e293b;
+  --border-color: #334155;
+  --text-color: #f1f5f9;
+
+  --menu-btn-bg: #334155;
+  --menu-btn-text: #f1f5f9;
+  --menu-btn-hover: #475569;
+}
+
+
+:root {
+  --card-bg: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  --text-color: #0f172a;
+  --muted-text: #64748b;
+
+  --border-color: #cbd5e1;
+
+  --option-bg: #ffffff;
+  --option-hover: #f1f5f9;
+
+  --selected-bg: #eff6ff;
+
+  --blockquote-text: #444;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --accent: #0ea5e9;
+  --accent-hover: #0284c7;
+
+  --success: #16a34a;
+  --success-bg: #dcfce7;
+
+  --danger: #dc2626;
+  --danger-bg: #fee2e2;
+
+  --disabled: #94a3b8;
+
+  --input-bg: #ffffff;
+}
+
+/* DARK MODE */
+
+.dark {
+  --card-bg: #1e293b;
+  --card-shadow: 0 6px 18px rgba(0,0,0,0.35);
+
+  --text-color: #e2e8f0;
+  --muted-text: #94a3b8;
+
+  --border-color: #334155;
+
+  --option-bg: #1e293b;
+  --option-hover: #334155;
+
+  --selected-bg: #1e40af33;
+
+  --blockquote-text: #cbd5e1;
+
+  --input-bg: #0f172a;
+
+  --success-bg: #064e3b;
+  --danger-bg: #7f1d1d;
+}
+
+:root {
+  --page-bg: #f1f5f9;
+  --overlay-bg: rgba(0,0,0,0.3);
+}
+
+/* DARK MODE */
+
+.dark {
+  --page-bg: #020617;
+  --overlay-bg: rgba(0,0,0,0.6);
+}
+
+:root {
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --card-bg: #ffffff;
+  --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  --text-color: #0f172a;
+  --muted-text: #64748b;
+
+  --border-color: #e2e8f0;
+}
+
+.dark {
+
+  --card-bg: #1e293b;
+  --card-shadow: 0 6px 18px rgba(0,0,0,0.35);
+
+  --text-color: #e2e8f0;
+  --muted-text: #94a3b8;
+
+  --border-color: #334155;
+}
+
+:root {
+
+  --chip-bg: #f8f8f8;
+  --chip-hover: #eeeeee;
+
+  --table-header-bg: #f1f5f9;
+  --table-hover: #f5f5f5;
+
+  --page-section-bg: #f8fafc;
+
+  --success-text: #166534;
+  --danger-text: #991b1b;
+}
+
+.dark {
+
+  --chip-bg: #1e293b;
+  --chip-hover: #334155;
+
+  --table-header-bg: #0f172a;
+  --table-hover: #1e293b;
+
+  --page-section-bg: #020617;
+
+  --success-text: #86efac;
+  --danger-text: #fca5a5;
+}
+
+:root {
+
+  /* cores principais */
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --primary-light: #eff6ff;
+
+  --secondary: #0ea5e9;
+  --secondary-hover: #0284c7;
+
+  /* estados */
+
+  --success: #16a34a;
+  --success-light: #dcfce7;
+
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+
+  --disabled: #94a3b8;
+
+  /* textos */
+
+  --text-primary: #0f172a;
+  --text-muted: #64748b;
+
+  /* backgrounds */
+
+  --card-bg: white;
+  --input-bg: white;
+  --hover-bg: #f1f5f9;
+
+  /* bordas */
+
+  --border-color: #cbd5e1;
+  --border-soft: #e2e8f0;
+
+  /* progress */
+
+  --progress-bg: #eee;
+  --progress-fill: #4caf50;
+
+  /* focus */
+
+  --focus: #0ea5e9;
+  --focus-light: rgba(14,165,233,0.15);
+
+  /* sombras */
+
+  --shadow-soft: 0 4px 10px rgba(0,0,0,0.04);
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.05);
+  --shadow-strong: 0 10px 25px rgba(0,0,0,0.08);
+
+  /* overlay */
+
+  --overlay: rgba(0,0,0,0.35);
+}
+
+.dark {
+
+  --text-primary: #e5e7eb;
+  --text-muted: #9ca3af;
+
+  --card-bg: #111827;
+  --input-bg: #020617;
+  --hover-bg: #1f2937;
+
+  --border-color: #374151;
+  --border-soft: #374151;
+
+  --progress-bg: #374151;
+
+  --primary-light: #1e3a8a;
+
+  --success-light: #14532d;
+  --danger-light: #7f1d1d;
+
+  --shadow-soft: 0 4px 10px rgba(0,0,0,0.5);
+  --shadow-card: 0 4px 12px rgba(0,0,0,0.6);
+  --shadow-strong: 0 10px 25px rgba(0,0,0,0.7);
+
+  --overlay: rgba(0,0,0,0.6);
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+button {
+  display: block;
+  margin: 5px 0;
+  padding: 8px;
+  cursor: pointer;
+}
+
+input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  width: 100%;
+}

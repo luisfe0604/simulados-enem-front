@@ -1,0 +1,31 @@
+.layout {
+  display: flex;
+}
+
+.main {
+  margin-left: 240px;
+  width: 100%;
+  background-color: var(--page-bg);
+  min-height: 100vh;
+}
+
+.content {
+  padding: 30px;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: 900;
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+  }
+
+  .content {
+    padding: 20px;
+  }
+}

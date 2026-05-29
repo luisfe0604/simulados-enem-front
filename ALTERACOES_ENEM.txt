@@ -1,0 +1,36 @@
+ALTERAÇÕES REALIZADAS NO FRONTEND ENEM
+
+1) ALTERAÇÃO DAS ROTAS PARA BACKEND LOCAL
+- O frontend foi alterado para utilizar o backend local em:
+  http://localhost:3000
+
+- As rotas foram reorganizadas utilizando o prefixo /enem para permitir coexistência com o sistema da OAB no mesmo backend.
+
+Exemplos:
+- /enem/subjects
+- /enem/simulados/custom
+- /enem/simulados/prova/dia-1
+- /enem/simulados/prova/dia-2
+- /enem/simulados/prova/completa
+- /enem/simulados/revisao-erros
+
+2) NOVOS MODOS DE SIMULADO DO ENEM
+Foi criada uma nova estrutura de simulados voltada para o ENEM:
+
+- Simulado Personalizado
+  Permite escolher múltiplas matérias e quantidade de questões.
+
+- Revisão de erros
+  Mantida a lógica existente do sistema da OAB.
+
+- Prova Dia 1
+  Estrutura pensada para Linguagens + Humanas + Redação.
+
+- Prova Dia 2
+  Estrutura pensada para Matemática + Natureza.
+
+- Prova Completa
+  Estrutura preparada para simulado completo do ENEM.
+
+OBSERVAÇÃO:
+Os endpoints foram preparados apenas no frontend. O backend precisará implementar essas novas rotas.

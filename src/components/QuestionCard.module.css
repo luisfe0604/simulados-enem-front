@@ -36,14 +36,19 @@
   color: var(--muted-text);
 }
 
-.question-image-container {
-  width: 100% !important;
+:global(.question-image-container) {
+  width: 100%;
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
 }
 
-.question-image-container img {
-  width: 100% !important;
-  height: auto !important;
-  max-width: 100% !important;
+:global(.question-image) {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
 }
 
 .statement {

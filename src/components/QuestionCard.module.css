@@ -36,14 +36,19 @@
   color: var(--muted-text);
 }
 
+.question-image-container {
+  width: 100%;
+  overflow-x: auto;
+  text-align: center;
+  margin: 16px 0;
+}
+
 .question-image {
   display: block;
-  width: 100%;
   max-width: 100%;
   height: auto;
-  margin: 16px auto;
+  margin: 0 auto;
   border-radius: 8px;
-  object-fit: contain;
 }
 
 .statement {

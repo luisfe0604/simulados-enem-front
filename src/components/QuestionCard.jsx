@@ -25,13 +25,22 @@ export default function QuestionCard({
         },
       )
 
-      .replace(/(\.)?\s*!\[\]\((https?:\/\/[^\s)]+)\)/g, (match, dot, url) => {
-        if (dot) {
-          return `${dot}<br /><br /><img src="${url}" alt="Imagem da questão" class="question-image" /><br /><br />`;
-        }
+      .replace(
+        /(^|[.:])?\s*!\[\]\((https?:\/\/[^\s)]+)\)/g,
+        (match, prefix, url) => {
+          // imagem é a primeira coisa do texto
+          if (prefix === "") {
+            return `<img src="${url}" alt="Imagem da questão" class="question-image" /><br /><br />`;
+          }
 
-        return `<img src="${url}" alt="Imagem da questão" class="question-image" />`;
-      })
+          // imagem após ponto ou dois pontos
+          if (prefix === "." || prefix === ":") {
+            return `${prefix}<br /><br /><img src="${url}" alt="Imagem da questão" class="question-image" /><br /><br />`;
+          }
+
+          return `<img src="${url}" alt="Imagem da questão" class="question-image" />`;
+        },
+      )
 
       .replace(/(null){1,}/gi, "");
   }

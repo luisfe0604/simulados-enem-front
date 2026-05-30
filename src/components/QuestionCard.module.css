@@ -37,13 +37,13 @@
 }
 
 .question-image-container {
-  width: 100%;
+  width: 100% !important;
 }
 
 .question-image {
-  width: 100%;
-  height: auto;
-  max-width: 100%;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
 }
 
 .statement {

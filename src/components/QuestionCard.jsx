@@ -8,101 +8,103 @@ export default function QuestionCard({
   onSelect,
   disabled,
 }) {
+  function parseQuotes(text) {
+    if (!text) return text;
 
-function parseQuotes(text) {
-  if (!text) return text;
+    return text
+      .replace(/\*\*([\s\S]*?)\*\*/g, "<strong>$1</strong>")
 
-  return text
-    .replace(/\*\*([\s\S]*?)\*\*/g, "<strong>$1</strong>")
-    
-    .replace(/_([\s\S]*?)_/g, (match, content) => {
-      return `<i>${content.trim()}</i>`;
-    })
-    
-    .replace(/(([A-ZÀ-ÚÇ]{2,},\s?[A-ZÀ-ÚÇ]\.|Disponível em:|Acesso em:)[\s\S]*?(\((adaptado|fragmento)\)\s*\.?|\d{4}\s*\.?))/gi, (match) => {
-      return `<br />${match.trim()}`;
-    })
-    
-    .replace(
-      /!\[\]\((https?:\/\/[^\s)]+)\)/g,
-      '<div class="question-image-container"><img src="$1" alt="Imagem da questão" class="question-image" /></div>'
-    )
-    
-    .replace(/(null){1,}/gi, "");
-}
+      .replace(/_([\s\S]*?)_/g, (match, content) => {
+        return `<i>${content.trim()}</i>`;
+      })
 
-function splitStatement(text) {
-  if (!text) return { intro: text, question: "" };
+      .replace(
+        /(([A-ZÀ-ÚÇ]{2,},\s?[A-ZÀ-ÚÇ]\.|Disponível em:|Acesso em:)[\s\S]*?(\((adaptado|fragmento)\)\s*\.?|\d{4}\s*\.?))/gi,
+        (match) => {
+          return `<br />${match.trim()}`;
+        },
+      )
 
-  let cleanedText = text.replace(/\r/g, "").trim();
+      .replace(
+        /!\[\]\((https?:\/\/[^\s)]+)\)/g,
+        '<img src="$1" alt="Imagem da questão" class="question-image" />',
+      )
 
-  const adaptationPattern = /\((adaptado|fragmento)\)\s*\.?/i;
-  const matches = [...cleanedText.matchAll(new RegExp(adaptationPattern, 'gi'))];
-
-  if (matches.length > 0) {
-    const lastMatch = matches[matches.length - 1];
-    const cutIndex = lastMatch.index + lastMatch[0].length;
-    
-    const intro = cleanedText.slice(0, cutIndex).trim();
-    let question = cleanedText.slice(cutIndex).trim();
-
-    if (question) {
-      question = `<br />${question}`;
-      return { intro, question };
-    }
+      .replace(/(null){1,}/gi, "");
   }
 
-  const authorAndYearPattern = /([A-ZÀ-ÚÇ]{2,},\s?[A-ZÀ-ÚÇ]\.[\s\S]*?\d{4}\s*\.?)/g;
-  const yearMatches = [...cleanedText.matchAll(authorAndYearPattern)];
-  
-  if (yearMatches.length > 0) {
-    const lastYearMatch = yearMatches[yearMatches.length - 1];
-    const cutIndex = lastYearMatch.index + lastYearMatch[0].length;
-    
-    const intro = cleanedText.slice(0, cutIndex).trim();
-    let question = cleanedText.slice(cutIndex).trim();
-    
-    if (question) {
-      question = `<br />${question}`;
-      return { intro, question };
-    }
-  }
+  function splitStatement(text) {
+    if (!text) return { intro: text, question: "" };
 
-  const citationPatterns = [
-    /Disponível em:/i,
-    /Acesso em:/i
-  ];
+    let cleanedText = text.replace(/\r/g, "").trim();
 
-  let lastCitationIndex = -1;
-  citationPatterns.forEach(pattern => {
-    const cMatches = [...cleanedText.matchAll(new RegExp(pattern, 'g'))];
-    if (cMatches.length > 0) {
-      const lastMatch = cMatches[cMatches.length - 1];
-      const endOfLine = cleanedText.indexOf('\n', lastMatch.index);
-      if (endOfLine !== -1 && endOfLine > lastCitationIndex) {
-        lastCitationIndex = endOfLine;
+    const adaptationPattern = /\((adaptado|fragmento)\)\s*\.?/i;
+    const matches = [
+      ...cleanedText.matchAll(new RegExp(adaptationPattern, "gi")),
+    ];
+
+    if (matches.length > 0) {
+      const lastMatch = matches[matches.length - 1];
+      const cutIndex = lastMatch.index + lastMatch[0].length;
+
+      const intro = cleanedText.slice(0, cutIndex).trim();
+      let question = cleanedText.slice(cutIndex).trim();
+
+      if (question) {
+        question = `<br />${question}`;
+        return { intro, question };
       }
     }
-  });
 
-  if (lastCitationIndex !== -1) {
-    const intro = cleanedText.slice(0, lastCitationIndex).trim();
-    let question = cleanedText.slice(lastCitationIndex).trim();
-    if (question) {
-      question = `<br />${question}`;
+    const authorAndYearPattern =
+      /([A-ZÀ-ÚÇ]{2,},\s?[A-ZÀ-ÚÇ]\.[\s\S]*?\d{4}\s*\.?)/g;
+    const yearMatches = [...cleanedText.matchAll(authorAndYearPattern)];
+
+    if (yearMatches.length > 0) {
+      const lastYearMatch = yearMatches[yearMatches.length - 1];
+      const cutIndex = lastYearMatch.index + lastYearMatch[0].length;
+
+      const intro = cleanedText.slice(0, cutIndex).trim();
+      let question = cleanedText.slice(cutIndex).trim();
+
+      if (question) {
+        question = `<br />${question}`;
+        return { intro, question };
+      }
+    }
+
+    const citationPatterns = [/Disponível em:/i, /Acesso em:/i];
+
+    let lastCitationIndex = -1;
+    citationPatterns.forEach((pattern) => {
+      const cMatches = [...cleanedText.matchAll(new RegExp(pattern, "g"))];
+      if (cMatches.length > 0) {
+        const lastMatch = cMatches[cMatches.length - 1];
+        const endOfLine = cleanedText.indexOf("\n", lastMatch.index);
+        if (endOfLine !== -1 && endOfLine > lastCitationIndex) {
+          lastCitationIndex = endOfLine;
+        }
+      }
+    });
+
+    if (lastCitationIndex !== -1) {
+      const intro = cleanedText.slice(0, lastCitationIndex).trim();
+      let question = cleanedText.slice(lastCitationIndex).trim();
+      if (question) {
+        question = `<br />${question}`;
+        return { intro, question };
+      }
+    }
+
+    const paragraphs = cleanedText.split(/\n\s*\n/);
+    if (paragraphs.length > 1) {
+      const question = paragraphs.pop().trim();
+      const intro = paragraphs.join("\n").trim();
       return { intro, question };
     }
-  }
 
-  const paragraphs = cleanedText.split(/\n\s*\n/);
-  if (paragraphs.length > 1) {
-    const question = paragraphs.pop().trim();
-    const intro = paragraphs.join("\n").trim();
-    return { intro, question };
+    return { intro: "", question: cleanedText };
   }
-
-  return { intro: "", question: cleanedText };
-}
 
   const statementWithQuotes = parseQuotes(q.statement);
 

@@ -38,7 +38,7 @@
 
 .question-image {
   display: block;
-  max-width: 100%;
+  max-width: 100vdh;
   width: auto;
   height: auto;
   margin: 16px auto;

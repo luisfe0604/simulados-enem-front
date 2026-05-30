@@ -38,11 +38,12 @@
 
 .question-image {
   display: block;
-  max-width: 100vdh;
-  width: auto;
+  width: 100%;
+  max-width: 100%;
   height: auto;
   margin: 16px auto;
   border-radius: 8px;
+  object-fit: contain;
 }
 
 .statement {

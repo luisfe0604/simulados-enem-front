@@ -34,7 +34,7 @@ export default function Login() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.card}>
-        <h1 className={styles.title}>JurisAprova - Enem</h1>
+        <h1 className={styles.title}>NexAprova</h1>
         <p className={styles.subtitle}>Acesse sua conta para continuar</p>
 
         <form onSubmit={handleSubmit} className={styles.form}>

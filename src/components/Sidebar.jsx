@@ -25,7 +25,7 @@ export default function Sidebar({ open }) {
     <>
       <div className={`${styles.sidebar} ${open ? styles.open : ""}`}>
         <div>
-          <h2 className={styles.logo}>JurisAprova - Enem</h2>
+          <h2 className={styles.logo}>NexAprova</h2>
 
           <nav className={styles.nav}>
             <NavItem to="/" label="Dashboard" />

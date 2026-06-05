@@ -43,6 +43,9 @@ export default function Conta() {
     try {
       const data = await apiFetch("/billing/create-checkout-session", {
         method: "POST",
+        body: JSON.stringify({
+          system: "enem",
+        }),
       });
       setSuccess("Assinatura atualizada com sucesso");
       setError(null);
@@ -145,10 +148,7 @@ export default function Conta() {
           )}
 
           {subscription.cancel_at_period_end && (
-            <button
-              className={styles.button}
-              onClick={handleReactivate}
-            >
+            <button className={styles.button} onClick={handleReactivate}>
               Reativar assinatura
             </button>
           )}

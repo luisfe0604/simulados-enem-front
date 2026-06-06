@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import apiFetch from "../../utils/apiFetch";
+import { apiFetch } from "../services/api";
 import styles from "./UserDetailsModal.module.css";
 
 export default function UserDetailsModal({ userId, open, onClose }) {

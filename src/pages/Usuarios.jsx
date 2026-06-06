@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import apiFetch from "../../utils/apiFetch";
+import { apiFetch } from "../services/api";
 
 export default function UsersAdminPage() {
   const [users, setUsers] = useState([]);

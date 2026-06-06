@@ -10,7 +10,7 @@ import Register from "./pages/Register";
 import Conta from "./pages/Conta";
 import NewQuestion from "./pages/NewQuestion";
 import AdminDashboard from "./pages/AdminDashboard";
-import Users from "./pages/Usuarios";
+import UsersAdminPage from "./pages/Usuarios";
 import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
@@ -86,7 +86,7 @@ export default function App() {
           element={
             <PrivateRoute>
               <AdminRoute>
-                <AdminDashboard />
+                <UsersAdminPage />
               </AdminRoute>
             </PrivateRoute>
           }

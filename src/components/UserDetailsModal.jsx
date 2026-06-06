@@ -100,8 +100,7 @@ export default function UserDetailsModal({ userId, open, onClose }) {
             </div>
 
             <div>
-              <strong>Stripe Subscription:</strong>{" "}
-              {user.stripe_subscription_id || "-"}
+              <strong>Administrador:</strong> {user.is_admin ? "Sim" : "Não"}
             </div>
 
             <div>

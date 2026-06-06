@@ -172,7 +172,7 @@ export default function UsersAdminPage() {
                           className={`${styles.actionButton} ${styles.adminButton}`}
                           onClick={() => toggleAdmin(user.id)}
                         >
-                          {user.is_admin ? "Remover Admin" : "Tornar Admin"}
+                          {user.is_admin ? "- Admin" : "+ Admin"}
                         </button>
 
                         <button

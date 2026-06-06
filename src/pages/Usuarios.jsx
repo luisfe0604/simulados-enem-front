@@ -137,7 +137,7 @@ export default function UsersAdminPage() {
                     <td>
                       <span
                         className={
-                          user.plan === "premium"
+                          user.plan === "premium" || "admin"
                             ? styles.planPremium
                             : styles.planFree
                         }
@@ -149,7 +149,7 @@ export default function UsersAdminPage() {
                     <td>
                       <span
                         className={
-                          user.subscription_status === "active"
+                          user.subscription_status === "active" || "admin" || "trialing"
                             ? styles.statusActive
                             : styles.statusInactive
                         }

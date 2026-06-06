@@ -211,12 +211,11 @@ export default function UsersAdminPage() {
           </div>
         </>
       )}
+      <UserDetailsModal
+        open={detailsOpen}
+        userId={selectedUserId}
+        onClose={() => setDetailsOpen(false)}
+      />
     </div>
   );
 }
-
-<UserDetailsModal
-  open={detailsOpen}
-  userId={selectedUserId}
-  onClose={() => setDetailsOpen(false)}
-/>

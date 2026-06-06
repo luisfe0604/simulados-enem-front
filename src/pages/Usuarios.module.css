@@ -1,0 +1,239 @@
+.page {
+  padding: 24px;
+}
+
+.title {
+  margin-bottom: 24px;
+  color: var(--text-color);
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.searchInput {
+  flex: 1;
+
+  padding: 12px;
+
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+
+  background: var(--input-bg);
+  color: var(--text-color);
+}
+
+.searchButton {
+  padding: 12px 18px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: var(--primary);
+  color: white;
+
+  cursor: pointer;
+}
+
+.searchButton:hover {
+  background: var(--primary-hover);
+}
+
+.tableContainer {
+  overflow-x: auto;
+
+  background: var(--card-bg);
+
+  border-radius: 12px;
+
+  box-shadow: var(--shadow-card);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: var(--table-header-bg);
+
+  padding: 14px;
+
+  text-align: left;
+
+  color: var(--text-color);
+  font-weight: 600;
+}
+
+.table td {
+  padding: 14px;
+
+  border-top: 1px solid var(--border-color);
+
+  color: var(--text-color);
+}
+
+.table tr:hover {
+  background: var(--table-hover);
+}
+
+.userButton {
+  background: none;
+  border: none;
+
+  color: var(--primary);
+
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+.userButton:hover {
+  text-decoration: underline;
+}
+
+.planPremium {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.planFree {
+  color: var(--muted-text);
+}
+
+.statusActive {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.statusInactive {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.adminBadge {
+  display: inline-block;
+
+  padding: 4px 10px;
+
+  border-radius: 999px;
+
+  background: var(--primary-light);
+
+  color: var(--primary);
+
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.actionButton {
+  border: none;
+
+  border-radius: 8px;
+
+  padding: 8px 12px;
+
+  cursor: pointer;
+
+  font-size: 13px;
+}
+
+.adminButton {
+  background: var(--primary);
+  color: white;
+}
+
+.premiumButton {
+  background: var(--success);
+  color: white;
+}
+
+.freeButton {
+  background: #f59e0b;
+  color: white;
+}
+
+.cancelButton {
+  background: var(--danger);
+  color: white;
+}
+
+.pagination {
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.pagination button {
+  border: none;
+
+  border-radius: 8px;
+
+  padding: 10px 16px;
+
+  background: var(--primary);
+
+  color: white;
+
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.loading {
+  text-align: center;
+
+  padding: 30px;
+
+  color: var(--muted-text);
+}
+
+.empty {
+  text-align: center;
+
+  padding: 30px;
+
+  color: var(--muted-text);
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 12px;
+  }
+
+  .filters {
+    flex-direction: column;
+  }
+
+  .searchButton {
+    width: 100%;
+  }
+
+  .table th,
+  .table td {
+    padding: 10px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actionButton {
+    width: 100%;
+  }
+}

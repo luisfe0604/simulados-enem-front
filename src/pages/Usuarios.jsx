@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { apiFetch } from "../services/api";
 
+import UserDetailsModal from "../components/UserDetailsModal";
+
 export default function UsersAdminPage() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");

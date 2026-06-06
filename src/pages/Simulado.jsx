@@ -70,9 +70,9 @@ export default function Simulado() {
 
     if (limit) params.append("limit", limit);
 
-    selectedSubjects.forEach((subject) => {
-      params.append("subjects[]", subject);
-    });
+    if (subject) {
+      params.append("subject", subject);
+    }
 
     const data = await apiFetch(
       `/enem/questions/generate?${params.toString()}`,

@@ -71,7 +71,7 @@ export default function Simulado() {
     if (limit) params.append("limit", limit);
 
     if (subject) {
-      params.append("subject", subject);
+      params.append("subject_id", subject);
     }
 
     const data = await apiFetch(

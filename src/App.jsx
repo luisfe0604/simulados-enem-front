@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Conta from "./pages/Conta";
 import NewQuestion from "./pages/NewQuestion";
 import AdminDashboard from "./pages/AdminDashboard";
+import Users from "./pages/Usuarios";
 import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
@@ -72,6 +73,16 @@ export default function App() {
         />
         <Route
           path="/dashAdmin"
+          element={
+            <PrivateRoute>
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
           element={
             <PrivateRoute>
               <AdminRoute>

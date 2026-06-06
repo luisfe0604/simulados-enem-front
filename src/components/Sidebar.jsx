@@ -34,6 +34,7 @@ export default function Sidebar({ open }) {
             <NavItem to="/conta" label="Conta" />
             {sub?.is_admin && <NavItem to="/questao" label="Nova Questão" />}
             {sub?.is_admin && <NavItem to="/dashAdmin" label="Dashboard Admin" />}
+            {sub?.is_admin && <NavItem to="/users" label="Usuários" />}
           </nav>
         </div>
 

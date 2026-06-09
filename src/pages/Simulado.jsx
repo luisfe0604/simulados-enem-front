@@ -130,6 +130,13 @@ export default function Simulado() {
     subscription?.subscription_status,
   );
 
+  const SUBJECT_LABELS = {
+    "ciencias-humanas": "Ciências Humanas",
+    "ciencias-natureza": "Ciências da Natureza",
+    linguagens: "Linguagens, Códigos e Redação",
+    matematica: "Matemática",
+  };
+
   async function finish() {
     if (submitting) return;
 
@@ -237,9 +244,10 @@ export default function Simulado() {
             onChange={(e) => setSubject(e.target.value)}
           >
             <option value="">Todos os Assuntos</option>
+
             {subjects.map((s) => (
               <option key={s.id} value={s.id}>
-                {s.name}
+                {SUBJECT_LABELS[s.name] || s.name}
               </option>
             ))}
           </select>

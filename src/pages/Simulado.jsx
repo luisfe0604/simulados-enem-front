@@ -133,7 +133,7 @@ export default function Simulado() {
   const SUBJECT_LABELS = {
     "ciencias-humanas": "Ciências Humanas",
     "ciencias-natureza": "Ciências da Natureza",
-    linguagens: "Linguagens, Códigos e Redação",
+    linguagens: "Linguagens",
     matematica: "Matemática",
   };
 

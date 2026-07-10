@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Logo from "@/components/Logo";
 
 export default function AuthLayout({
   children,
@@ -11,7 +11,7 @@ export default function AuthLayout({
           Vira um cabeçalho compacto no mobile. */}
       <aside className="brand-gradient relative flex flex-col justify-between overflow-hidden px-6 py-8 text-white lg:w-[45%] lg:px-12 lg:py-14">
         <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="NexAprova" width={36} height={36} />
+          <Logo variant="mark" size={32} />
           <span className="font-display text-lg font-semibold">NexAprova</span>
         </div>
 

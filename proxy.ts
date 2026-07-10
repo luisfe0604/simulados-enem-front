@@ -39,6 +39,10 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   // Roda em tudo, menos rotas de API (têm auth própria), assets do Next e
-  // arquivos estáticos públicos.
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|logo.png).*)"],
+  // arquivos de metadata/estáticos (ícone, favicon, imagens públicas). Sem essa
+  // exclusão, o navegador não-logado é redirecionado ao buscar o favicon, e o
+  // ícone da aba não aparece na tela de login.
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|icon.svg|apple-icon.png|logo.png|.*\\.(?:png|jpg|jpeg|svg|webp|ico)$).*)",
+  ],
 };

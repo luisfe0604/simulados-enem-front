@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
+import Logo from "@/components/Logo";
 
 interface SidebarProps {
   open: boolean;
@@ -50,7 +50,7 @@ export default function Sidebar({ open, isAdmin, onNavigate }: SidebarProps) {
     >
       <div>
         <div className="mb-8 flex items-center gap-2 px-1">
-          <Image src="/logo.png" alt="NexAprova" width={30} height={30} />
+          <Logo size={30} />
           <span className="font-display text-lg font-bold text-text-primary">
             NexAprova
           </span>

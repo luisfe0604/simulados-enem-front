@@ -160,7 +160,8 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <h1 className="text-2xl font-bold text-text-primary">Simulados ENEM</h1>
+      <p className="eyebrow">Praticar</p>
+      <h1 className="mt-1 text-3xl font-bold text-text-primary">Simulados ENEM</h1>
 
       {!isActive && (
         <div className="mt-4 flex items-center justify-between gap-4 rounded-xl bg-danger-light p-4">

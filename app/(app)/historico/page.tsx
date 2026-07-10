@@ -117,7 +117,8 @@ export default function HistoricoPage() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <h1 className="text-2xl font-bold text-text-primary">
+      <p className="eyebrow">Sua evolução</p>
+      <h1 className="mt-1 text-3xl font-bold text-text-primary">
         Histórico de Simulados
       </h1>
 

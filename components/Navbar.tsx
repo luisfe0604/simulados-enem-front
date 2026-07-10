@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
 
 interface NavbarProps {
@@ -9,8 +8,10 @@ interface NavbarProps {
 }
 
 export default function Navbar({ userLabel, onToggleSidebar }: NavbarProps) {
+  const initial = userLabel.trim().charAt(0).toUpperCase() || "?";
+
   return (
-    <header className="flex items-center justify-between border-b border-border bg-bg-card px-4 py-3">
+    <header className="sticky top-0 z-20 flex items-center justify-between border-b border-border-soft bg-bg-card/80 px-4 py-3 backdrop-blur">
       <button
         onClick={onToggleSidebar}
         aria-label="Abrir menu"
@@ -19,14 +20,20 @@ export default function Navbar({ userLabel, onToggleSidebar }: NavbarProps) {
         ☰
       </button>
 
-      <div className="flex items-center gap-2 text-text-primary">
-        <Image src="/logo.png" alt="logo" width={28} height={28} />
-        <span>
-          Olá, <strong>{userLabel}</strong>
-        </span>
+      <div className="ml-auto flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <span
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white"
+            aria-hidden
+          >
+            {initial}
+          </span>
+          <span className="hidden text-sm text-text-primary sm:inline">
+            Olá, <strong className="font-semibold">{userLabel}</strong>
+          </span>
+        </div>
+        <ThemeToggle />
       </div>
-
-      <ThemeToggle />
     </header>
   );
 }

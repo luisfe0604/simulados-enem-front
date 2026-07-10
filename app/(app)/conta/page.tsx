@@ -87,8 +87,9 @@ export default function ContaPage() {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <div className="rounded-xl border border-border-soft bg-bg-card p-6 shadow-card">
-        <h1 className="text-2xl font-bold text-text-primary">Minha Conta</h1>
+      <div className="card p-6">
+        <p className="eyebrow">Conta</p>
+        <h1 className="mt-1 text-3xl font-bold text-text-primary">Minha Conta</h1>
         <p className="mt-1 text-sm text-text-muted">
           Gerencie sua assinatura e seus dados
         </p>

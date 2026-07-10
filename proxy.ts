@@ -10,7 +10,7 @@ import { TOKEN_COOKIE, verifyToken } from "@/lib/auth";
 
 const PUBLIC_PATHS = ["/login", "/register", "/auth-success"];
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   const token = req.cookies.get(TOKEN_COOKIE)?.value;

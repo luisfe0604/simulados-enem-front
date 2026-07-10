@@ -16,11 +16,10 @@ function getPool(): Pool {
 
   const pool = new Pool({
     connectionString,
-    // Provedores gerenciados (Render/Supabase) exigem SSL; aceitamos a conexão
-    // sem validar a cadeia de certificados, igual ao backend antigo.
-    ssl: { rejectUnauthorized: false },
-    // Poucas conexões por instância: em serverless muitas instâncias dividem o
-    // mesmo banco, então limitar aqui evita esgotar o limite de conexões.
+    // NÃO forçamos SSL: este banco não suporta SSL (o backend antigo conecta
+    // sem nenhuma opção de ssl). Deixamos o `pg` respeitar o sslmode da própria
+    // connection string — assim funciona onde o backend funciona. Se algum
+    // ambiente exigir SSL, basta acrescentar ?sslmode=require na DATABASE_URL.
     max: 5,
     idleTimeoutMillis: 30_000,
   });

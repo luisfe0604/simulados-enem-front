@@ -35,10 +35,8 @@ export default function RegisterPage() {
 
   return (
     <>
-      <h1 className="text-center text-2xl font-bold text-text-primary">
-        Criar conta
-      </h1>
-      <p className="mt-1 text-center text-sm text-text-muted">
+      <h1 className="text-2xl font-bold text-text-primary">Criar conta</h1>
+      <p className="mt-1 text-sm text-text-muted">
         Comece seu teste gratuito de 7 dias após assinar
       </p>
 

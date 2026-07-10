@@ -79,10 +79,37 @@
   --color-border: var(--color-border);
   --color-border-soft: var(--color-border-soft);
   --color-focus: var(--color-focus);
+
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-mono);
 }
 
 body {
   background: var(--color-bg-page);
   color: var(--color-text-primary);
-  font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Títulos usam a display face com tracking levemente negativo — o "sotaque"
+   tipográfico da marca. Recharts renderiza texto em SVG (não h1-h4), então
+   aplicar às tags de título aqui não afeta os gráficos. */
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Números/monoespaçado para timer e notas. */
+.font-mono,
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Marca d'água/gradiente da identidade: azul -> sky, usado no painel de auth. */
+.brand-gradient {
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 45%, #0ea5e9 100%);
 }

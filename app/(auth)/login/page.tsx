@@ -39,9 +39,9 @@ function LoginForm() {
 
   return (
     <>
-      <h1 className="text-center text-2xl font-bold text-primary">NexAprova</h1>
-      <p className="mt-1 text-center text-sm text-text-muted">
-        Acesse sua conta para continuar
+      <h1 className="text-2xl font-bold text-text-primary">Bem-vindo de volta</h1>
+      <p className="mt-1 text-sm text-text-muted">
+        Entre para continuar seus simulados
       </p>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">

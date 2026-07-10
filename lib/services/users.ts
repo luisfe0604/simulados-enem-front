@@ -30,7 +30,7 @@ export async function registerUser({
 
   const hashed = await hashPassword(password);
 
-  const result = await pool.query(
+  const result = await pool.query<PublicUser>(
     `INSERT INTO public.users
        (name, email, password_hash, plan, subscription_status)
      VALUES ($1, $2, $3, 'free', 'inactive')
@@ -48,8 +48,8 @@ export async function loginUser({
   email: string;
   password: string;
 }): Promise<number> {
-  const result = await pool.query(
-    "SELECT * FROM public.users WHERE email = $1",
+  const result = await pool.query<{ id: number; password_hash: string }>(
+    "SELECT id, password_hash FROM public.users WHERE email = $1",
     [email],
   );
   const user = result.rows[0];
@@ -73,7 +73,7 @@ export async function findOrCreateByEmail({
   name: string;
   email: string;
 }): Promise<{ id: number }> {
-  const existing = await pool.query(
+  const existing = await pool.query<{ id: number }>(
     "SELECT id FROM public.users WHERE email = $1",
     [email],
   );
@@ -81,7 +81,7 @@ export async function findOrCreateByEmail({
     return existing.rows[0];
   }
 
-  const result = await pool.query(
+  const result = await pool.query<{ id: number }>(
     `INSERT INTO public.users
        (name, email, plan, subscription_status, created_at)
      VALUES ($1, $2, 'free', 'inactive', NOW())

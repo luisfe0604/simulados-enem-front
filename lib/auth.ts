@@ -1,9 +1,8 @@
 import { SignJWT, jwtVerify } from "jose";
-import bcrypt from "bcryptjs";
 
 // Este módulo é edge-safe (usado tanto em Route Handlers Node quanto no
 // middleware.ts que roda no Edge Runtime). Por isso NÃO importar `next/headers`
-// aqui — os helpers de cookie ficam em lib/session.ts.
+// nem `bcryptjs` aqui — cookies ficam em lib/session.ts e senha em lib/password.ts.
 
 export const TOKEN_COOKIE = "token";
 const TOKEN_MAX_AGE_SECONDS = 60 * 60 * 24 * 7; // 7 dias, igual ao backend antigo
@@ -53,14 +52,3 @@ export const tokenCookieOptions = {
   path: "/",
   maxAge: TOKEN_MAX_AGE_SECONDS,
 };
-
-export async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, 10);
-}
-
-export async function comparePassword(
-  password: string,
-  hash: string,
-): Promise<boolean> {
-  return bcrypt.compare(password, hash);
-}

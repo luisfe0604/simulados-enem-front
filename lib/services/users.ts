@@ -1,5 +1,5 @@
 import pool from "@/lib/db";
-import { hashPassword, comparePassword } from "@/lib/auth";
+import { hashPassword, comparePassword } from "@/lib/password";
 
 export interface PublicUser {
   id: number;

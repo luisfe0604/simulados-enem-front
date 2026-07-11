@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
 import QuestionCard, { type Question } from "@/components/QuestionCard";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 
 interface Subject {
   id: number;
@@ -39,6 +40,8 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
   const router = useRouter();
 
   const simuladoAtivo = questions.length > 0 && !result;
+
+  useBodyScrollLock(showNavigator);
 
   useEffect(() => {
     async function loadInitialData() {
@@ -268,7 +271,9 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
       </div>
 
       {questions.length > 0 && (
-        <div className="sticky top-0 z-10 mt-6 rounded-xl border border-border-soft bg-bg-card p-3">
+        // top-16 (64px) = logo abaixo do Navbar (sticky top-0, ~63px de altura),
+        // senão os dois ficam sobrepostos na mesma posição ao rolar a página.
+        <div className="sticky top-16 z-10 mt-6 rounded-xl border border-border-soft bg-bg-card p-3 shadow-card">
           <div className="flex items-center justify-between text-sm text-text-primary">
             <span>
               {answeredCount} / {questions.length} respondidas

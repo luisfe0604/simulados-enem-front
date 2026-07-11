@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { apiFetch } from "@/lib/client-api";
+import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 
 interface UserDetails {
   id: number;
@@ -41,6 +42,8 @@ export default function UserDetailsModal({ userId, open, onClose, onChanged }: P
     if (!open || !userId) return;
     loadUser();
   }, [open, userId, loadUser]);
+
+  useBodyScrollLock(open);
 
   async function act(fn: () => Promise<void>) {
     await fn();

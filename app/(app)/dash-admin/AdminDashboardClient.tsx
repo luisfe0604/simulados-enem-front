@@ -23,7 +23,8 @@ interface Metrics {
   subscriptions_growth: { month: string; count: number }[];
 }
 
-const COLORS = ["#2563eb", "#22c55e", "#ef4444"];
+// Cores dos gráficos alinhadas à paleta do sistema (primary / success / danger).
+const COLORS = ["#2563eb", "#16a34a", "#dc2626"];
 
 export default function AdminDashboardClient() {
   const [data, setData] = useState<Metrics | null>(null);
@@ -50,7 +51,8 @@ export default function AdminDashboardClient() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <h1 className="text-2xl font-bold text-text-primary">Dashboard Admin</h1>
+      <p className="eyebrow">Administração</p>
+      <h1 className="mt-1 text-2xl font-bold text-text-primary">Dashboard Admin</h1>
 
       <div className="mt-6 grid grid-cols-2 gap-4 lg:grid-cols-4">
         <Card title="Usuários" value={data.total_users} />
@@ -60,7 +62,7 @@ export default function AdminDashboardClient() {
       </div>
 
       <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-border-soft bg-bg-card p-4 shadow-card">
+        <div className="card p-4">
           <h3 className="mb-3 font-semibold text-text-primary">
             Crescimento de Usuários
           </h3>
@@ -93,7 +95,7 @@ export default function AdminDashboardClient() {
           </ResponsiveContainer>
         </div>
 
-        <div className="rounded-xl border border-border-soft bg-bg-card p-4 shadow-card">
+        <div className="card p-4">
           <h3 className="mb-3 font-semibold text-text-primary">
             Status das Assinaturas
           </h3>
@@ -122,9 +124,11 @@ export default function AdminDashboardClient() {
 
 function Card({ title, value }: { title: string; value: number }) {
   return (
-    <div className="rounded-xl border border-border-soft bg-bg-card p-4 shadow-card">
-      <span className="text-sm text-text-muted">{title}</span>
-      <span className="mt-1 block text-2xl font-bold text-text-primary">{value}</span>
+    <div className="card p-4">
+      <p className="eyebrow">{title}</p>
+      <p className="mt-2 font-mono text-3xl font-bold text-text-primary tabular-nums">
+        {value}
+      </p>
     </div>
   );
 }

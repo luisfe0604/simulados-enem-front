@@ -56,7 +56,7 @@ export default function UserDetailsModal({ userId, open, onClose, onChanged }: P
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={onClose}>
       <div
-        className="w-full max-w-md rounded-xl bg-bg-card p-6"
+        className="w-full max-w-md rounded-2xl border border-border-soft bg-bg-card p-6 shadow-strong"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between">
@@ -88,19 +88,19 @@ export default function UserDetailsModal({ userId, open, onClose, onChanged }: P
             <div className="mt-4 flex flex-wrap gap-2">
               <button
                 onClick={() => act(() => apiFetch(`/users/${user.id}/admin`, { method: "PATCH" }))}
-                className="rounded-lg border border-border px-3 py-1 text-sm hover:bg-bg-hover"
+                className="btn btn-outline btn-sm"
               >
                 {user.is_admin ? "Remover Admin" : "Tornar Admin"}
               </button>
               <button
                 onClick={() => act(() => apiFetch(`/users/${user.id}/premium`, { method: "PATCH" }))}
-                className="rounded-lg border border-border px-3 py-1 text-sm hover:bg-bg-hover"
+                className="btn btn-outline btn-sm"
               >
                 Liberar Premium
               </button>
               <button
                 onClick={() => act(() => apiFetch(`/users/${user.id}/free`, { method: "PATCH" }))}
-                className="rounded-lg border border-border px-3 py-1 text-sm hover:bg-bg-hover"
+                className="btn btn-outline btn-sm"
               >
                 Definir como Free
               </button>
@@ -110,7 +110,7 @@ export default function UserDetailsModal({ userId, open, onClose, onChanged }: P
                     act(() => apiFetch(`/users/${user.id}/subscription`, { method: "DELETE" }));
                   }
                 }}
-                className="rounded-lg border border-danger px-3 py-1 text-sm text-danger hover:bg-danger-light"
+                className="btn btn-danger btn-sm"
               >
                 Cancelar Assinatura
               </button>

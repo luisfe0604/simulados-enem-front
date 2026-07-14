@@ -80,14 +80,14 @@ export default function NewQuestionClient() {
     }
   }
 
-  const inputCls =
-    "w-full rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary";
+  const inputCls = "input";
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h2 className="text-2xl font-bold text-text-primary">Criar Questão</h2>
+      <p className="eyebrow">Administração</p>
+      <h2 className="mt-1 text-2xl font-bold text-text-primary">Criar Questão</h2>
 
-      <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-xl border border-border-soft bg-bg-card p-6 shadow-card">
+      <form onSubmit={handleSubmit} className="card mt-6 space-y-4 p-6">
         <div className="space-y-1">
           <label className="text-sm font-medium text-text-primary">Assunto</label>
           <select
@@ -168,7 +168,7 @@ export default function NewQuestionClient() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-primary py-2 font-medium text-white hover:bg-primary-hover disabled:opacity-60"
+          className="btn btn-primary btn-block"
         >
           {loading ? "Criando..." : "Criar Questão"}
         </button>

@@ -124,8 +124,8 @@ export default function QuestionCard({
   const qid = (q.id ?? q.question_id) as number;
 
   return (
-    <div className="mb-4 rounded-xl border border-border-soft bg-bg-card p-5 shadow-card">
-      <h3 className="mb-3 font-semibold text-primary">Questão {index + 1}</h3>
+    <div className="card mb-4 p-5">
+      <p className="eyebrow mb-3">Questão {index + 1}</p>
 
       <div className="space-y-2 leading-relaxed text-text-primary [&_img]:my-2 [&_img]:max-w-full">
         {intro && <p dangerouslySetInnerHTML={{ __html: intro }} />}

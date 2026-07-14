@@ -176,7 +176,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
           </div>
           <button
             onClick={() => router.push("/conta")}
-            className="shrink-0 rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover"
+            className="btn btn-primary shrink-0"
           >
             Assinar agora
           </button>
@@ -214,7 +214,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
               value={subject}
               disabled={simuladoAtivo}
               onChange={(e) => setSubject(e.target.value)}
-              className="rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary"
+              className="input w-auto"
             >
               <option value="">Todos os Assuntos</option>
               {subjects.map((s) => (
@@ -230,9 +230,9 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
               value={limit}
               disabled={simuladoAtivo}
               onChange={(e) => setLimit(Number(e.target.value))}
-              className="w-24 rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary"
+              className="input w-24"
             />
-            <button onClick={generateCustomSimulado} className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover">
+            <button onClick={generateCustomSimulado} className="btn btn-primary">
               Iniciar Simulado
             </button>
           </>
@@ -246,25 +246,25 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
               value={limit}
               disabled={simuladoAtivo}
               onChange={(e) => setLimit(Number(e.target.value))}
-              className="w-24 rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary"
+              className="input w-24"
             />
-            <button onClick={generateWrongSimulado} className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover">
+            <button onClick={generateWrongSimulado} className="btn btn-primary">
               Revisar erros
             </button>
           </>
         )}
         {mode === "dia1" && (
-          <button onClick={() => generateExamSimulado("day1")} className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover">
+          <button onClick={() => generateExamSimulado("day1")} className="btn btn-primary">
             Iniciar Prova Dia 1
           </button>
         )}
         {mode === "dia2" && (
-          <button onClick={() => generateExamSimulado("day2")} className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover">
+          <button onClick={() => generateExamSimulado("day2")} className="btn btn-primary">
             Iniciar Prova Dia 2
           </button>
         )}
         {mode === "full" && (
-          <button onClick={() => generateExamSimulado("full")} className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover">
+          <button onClick={() => generateExamSimulado("full")} className="btn btn-primary">
             Iniciar Prova Completa
           </button>
         )}
@@ -281,7 +281,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowNavigator(true)}
-                className="rounded-lg border border-border px-3 py-1 hover:bg-bg-hover"
+                className="btn btn-outline btn-sm"
               >
                 Questões
               </button>
@@ -314,14 +314,34 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
         ))}
       </div>
 
-      {result && (
-        <div className="mt-4 rounded-xl border border-border-soft bg-bg-card p-6 text-center">
-          <h2 className="text-lg font-semibold text-text-primary">Resultado</h2>
-          <p className="mt-2 text-3xl font-bold text-primary">
-            {result.score?.toFixed(2)}%
-          </p>
-        </div>
-      )}
+      {result &&
+        (() => {
+          const score = Number(result.score ?? 0);
+          const good = score >= 50;
+          return (
+            <div className="card mt-6 p-8 text-center">
+              <p className="eyebrow">Resultado do simulado</p>
+              <div className="mt-3 flex items-baseline justify-center gap-1">
+                <span
+                  className="font-mono text-6xl font-bold tabular-nums"
+                  style={{
+                    color: good
+                      ? "var(--color-success)"
+                      : "var(--color-danger)",
+                  }}
+                >
+                  {score.toFixed(0)}
+                </span>
+                <span className="text-2xl font-semibold text-text-muted">%</span>
+              </div>
+              <p className="mt-2 text-sm text-text-muted">
+                {good
+                  ? "Acima da média — continue nesse ritmo."
+                  : "Abaixo de 50%. Revise os erros e tente de novo."}
+              </p>
+            </div>
+          );
+        })()}
 
       {questions.length > 0 && (
         <div className="mt-6">
@@ -329,14 +349,14 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
             <button
               onClick={finish}
               disabled={submitting}
-              className="w-full rounded-lg bg-primary py-3 font-medium text-white hover:bg-primary-hover disabled:opacity-60"
+              className="btn btn-primary btn-block"
             >
               {submitting ? "Enviando..." : "Finalizar Simulado"}
             </button>
           ) : (
             <button
               onClick={() => router.push("/simulado")}
-              className="w-full rounded-lg bg-primary py-3 font-medium text-white hover:bg-primary-hover"
+              className="btn btn-primary btn-block"
             >
               Novo Simulado
             </button>
@@ -350,12 +370,27 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
           onClick={() => setShowNavigator(false)}
         >
           <div
-            className="max-h-[80vh] w-full max-w-md overflow-y-auto rounded-xl bg-bg-card p-5"
+            className="max-h-[80vh] w-full max-w-md overflow-y-auto rounded-2xl border border-border-soft bg-bg-card p-5 shadow-strong"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="mb-3 font-semibold text-text-primary">
-              Navegar pelas questões
-            </h3>
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="font-semibold text-text-primary">
+                Navegar pelas questões
+              </h3>
+              <span className="text-sm text-text-muted tabular">
+                {answeredCount}/{questions.length}
+              </span>
+            </div>
+            <div className="mb-4 flex items-center gap-4 text-xs text-text-muted">
+              <span className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                Respondida
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2.5 w-2.5 rounded-full border border-border" />
+                Pendente
+              </span>
+            </div>
             <div className="grid grid-cols-6 gap-2">
               {questions.map((q, index) => {
                 const answered = answers[q.id as number];

@@ -49,7 +49,7 @@ export default function RegisterPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary outline-none focus:border-focus"
+            className="input"
           />
         </div>
 
@@ -61,7 +61,7 @@ export default function RegisterPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="w-full rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary outline-none focus:border-focus"
+            className="input"
           />
         </div>
 
@@ -73,7 +73,7 @@ export default function RegisterPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="w-full rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary outline-none focus:border-focus"
+            className="input"
           />
         </div>
 
@@ -86,7 +86,7 @@ export default function RegisterPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-lg bg-primary py-2 font-medium text-white transition-colors hover:bg-primary-hover disabled:opacity-60"
+          className="btn btn-primary btn-block"
         >
           {loading ? "Criando..." : "Criar conta"}
         </button>

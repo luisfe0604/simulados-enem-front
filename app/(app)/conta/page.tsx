@@ -72,8 +72,17 @@ export default function ContaPage() {
   if (loading) {
     return (
       <div className="mx-auto max-w-2xl">
-        <div className="rounded-xl border border-border-soft bg-bg-card p-6">
-          <p className="text-text-muted">Carregando...</p>
+        <div className="card p-6">
+          <div className="skeleton h-3 w-20" />
+          <div className="skeleton mt-3 h-8 w-48" />
+          <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i}>
+                <div className="skeleton h-3 w-16" />
+                <div className="skeleton mt-2 h-5 w-32" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -109,7 +118,7 @@ export default function ContaPage() {
           <div className="sm:col-span-2">
             <span className="text-sm text-text-muted">Status</span>
             <div className="mt-1">
-              <span className="inline-block rounded-full bg-primary-light px-3 py-1 text-sm font-medium text-primary">
+              <span className={`badge ${isActive ? "badge-success" : "badge-muted"}`}>
                 {subscription.subscription_status}
               </span>
             </div>
@@ -124,26 +133,17 @@ export default function ContaPage() {
 
         <div className="mt-6">
           {!isActive && (
-            <button
-              onClick={handleSubscribe}
-              className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover"
-            >
+            <button onClick={handleSubscribe} className="btn btn-primary">
               Assinar
             </button>
           )}
           {isActive && !subscription.cancel_at_period_end && (
-            <button
-              onClick={handleCancel}
-              className="rounded-lg border border-danger px-4 py-2 font-medium text-danger hover:bg-danger-light"
-            >
+            <button onClick={handleCancel} className="btn btn-danger">
               Cancelar assinatura
             </button>
           )}
           {subscription.cancel_at_period_end && (
-            <button
-              onClick={handleReactivate}
-              className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover"
-            >
+            <button onClick={handleReactivate} className="btn btn-primary">
               Reativar assinatura
             </button>
           )}

@@ -132,7 +132,7 @@ export default function HistoricoPage() {
           </div>
           <button
             onClick={() => router.push("/conta")}
-            className="shrink-0 rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover"
+            className="btn btn-primary shrink-0"
           >
             Assinar agora
           </button>
@@ -156,9 +156,17 @@ export default function HistoricoPage() {
       </div>
 
       {simulados.length === 0 ? (
-        <p className="mt-6 text-text-muted">
-          Você ainda não realizou nenhum simulado.
-        </p>
+        <div className="card mt-6 flex flex-col items-center gap-3 p-10 text-center">
+          <p className="text-text-muted">
+            Nenhum simulado por aqui ainda. Faça o primeiro para ver sua evolução.
+          </p>
+          <button
+            onClick={() => router.push("/simulado")}
+            className="btn btn-primary"
+          >
+            Começar agora
+          </button>
+        </div>
       ) : (
         <>
           {/* Mobile: cards */}
@@ -167,7 +175,7 @@ export default function HistoricoPage() {
               <div
                 key={s.id}
                 onClick={() => toggleExpand(s.id)}
-                className="cursor-pointer rounded-xl border border-border-soft bg-bg-card p-4"
+                className="card card-interactive p-4"
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -178,7 +186,13 @@ export default function HistoricoPage() {
                       {new Date(s.created_at).toLocaleTimeString("pt-BR")}
                     </div>
                   </div>
-                  <span className={s.score >= 50 ? "font-bold text-success" : "font-bold text-danger"}>
+                  <span
+                    className="score-chip"
+                    style={{
+                      color: s.score >= 50 ? "var(--color-success)" : "var(--color-danger)",
+                      background: s.score >= 50 ? "var(--color-success-light)" : "var(--color-danger-light)",
+                    }}
+                  >
                     {parseFloat(String(s.score))}%
                   </span>
                 </div>
@@ -192,7 +206,7 @@ export default function HistoricoPage() {
                       e.stopPropagation();
                       router.push(`/simulado/refazer/${s.id}`);
                     }}
-                    className="rounded-lg border border-border px-3 py-1 text-sm hover:bg-bg-hover"
+                    className="btn btn-outline btn-sm"
                   >
                     Refazer
                   </button>
@@ -248,7 +262,13 @@ export default function HistoricoPage() {
                         {formatDuration(s.duration_seconds)}
                       </td>
                       <td className="p-3">
-                        <span className={s.score >= 50 ? "font-bold text-success" : "font-bold text-danger"}>
+                        <span
+                          className="score-chip"
+                          style={{
+                            color: s.score >= 50 ? "var(--color-success)" : "var(--color-danger)",
+                            background: s.score >= 50 ? "var(--color-success-light)" : "var(--color-danger-light)",
+                          }}
+                        >
                           {parseFloat(String(s.score))}%
                         </span>
                       </td>
@@ -258,7 +278,7 @@ export default function HistoricoPage() {
                             e.stopPropagation();
                             router.push(`/simulado/refazer/${s.id}`);
                           }}
-                          className="rounded-lg border border-border px-3 py-1 text-sm hover:bg-bg-hover"
+                          className="btn btn-outline btn-sm"
                         >
                           Refazer
                         </button>

@@ -54,7 +54,8 @@ export default function UsersClient() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <h1 className="text-2xl font-bold text-text-primary">Gestão de Usuários</h1>
+      <p className="eyebrow">Administração</p>
+      <h1 className="mt-1 text-2xl font-bold text-text-primary">Gestão de Usuários</h1>
 
       <div className="mt-4 flex gap-2">
         <input
@@ -63,12 +64,9 @@ export default function UsersClient() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && loadUsers(1)}
-          className="flex-1 rounded-lg border border-border bg-bg-input px-3 py-2 text-text-primary"
+          className="input flex-1"
         />
-        <button
-          onClick={() => loadUsers(1)}
-          className="rounded-lg bg-primary px-4 py-2 font-medium text-white hover:bg-primary-hover"
-        >
+        <button onClick={() => loadUsers(1)} className="btn btn-primary">
           Buscar
         </button>
       </div>
@@ -105,32 +103,22 @@ export default function UsersClient() {
                     </td>
                     <td className="p-3 text-text-primary">{user.email}</td>
                     <td className="p-3">
-                      <span
-                        className={
-                          user.plan === "premium"
-                            ? "rounded-full bg-primary-light px-2 py-0.5 text-xs text-primary"
-                            : "text-text-muted"
-                        }
-                      >
-                        {user.plan}
-                      </span>
+                      {user.plan === "premium" ? (
+                        <span className="badge badge-primary">{user.plan}</span>
+                      ) : (
+                        <span className="text-text-muted">{user.plan}</span>
+                      )}
                     </td>
                     <td className="p-3">
-                      <span
-                        className={
-                          user.subscription_status === "active"
-                            ? "text-success"
-                            : "text-text-muted"
-                        }
-                      >
-                        {user.subscription_status}
-                      </span>
+                      {user.subscription_status === "active" ? (
+                        <span className="badge badge-success">{user.subscription_status}</span>
+                      ) : (
+                        <span className="text-text-muted">{user.subscription_status}</span>
+                      )}
                     </td>
                     <td className="p-3">
                       {user.is_admin ? (
-                        <span className="rounded-full bg-primary-light px-2 py-0.5 text-xs text-primary">
-                          Admin
-                        </span>
+                        <span className="badge badge-primary">Admin</span>
                       ) : (
                         "-"
                       )}
@@ -173,7 +161,7 @@ export default function UsersClient() {
             <button
               disabled={page === 1}
               onClick={() => loadUsers(page - 1)}
-              className="rounded-lg border border-border px-3 py-1 disabled:opacity-50"
+              className="btn btn-outline btn-sm"
             >
               Anterior
             </button>
@@ -183,7 +171,7 @@ export default function UsersClient() {
             <button
               disabled={page >= totalPages}
               onClick={() => loadUsers(page + 1)}
-              className="rounded-lg border border-border px-3 py-1 disabled:opacity-50"
+              className="btn btn-outline btn-sm"
             >
               Próxima
             </button>

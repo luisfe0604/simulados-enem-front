@@ -116,7 +116,7 @@ export default function ContaPage() {
             }
           />
           <div className="sm:col-span-2">
-            <span className="text-sm text-text-muted">Status</span>
+            <span className="field-label">Status</span>
             <div className="mt-1">
               <span className={`badge ${isActive ? "badge-success" : "badge-muted"}`}>
                 {subscription.subscription_status}
@@ -162,8 +162,8 @@ export default function ContaPage() {
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <span className="text-sm text-text-muted">{label}</span>
-      <p className="font-medium text-text-primary">{value}</p>
+      <span className="field-label">{label}</span>
+      <p className="mt-0.5 font-medium text-text-primary">{value}</p>
     </div>
   );
 }

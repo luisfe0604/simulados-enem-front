@@ -32,7 +32,7 @@ export default function AuthLayout({
         {/* Marca d'água numérica gigante — remete à nota do ENEM (0–1000). */}
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-10 -right-6 select-none font-display text-[10rem] font-bold leading-none text-white/10 lg:text-[14rem]"
+          className="watermark-number absolute -bottom-10 -right-6 text-[10rem] text-white/10 lg:text-[14rem]"
         >
           1000
         </div>

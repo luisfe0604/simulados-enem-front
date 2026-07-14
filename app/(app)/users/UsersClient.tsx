@@ -75,21 +75,21 @@ export default function UsersClient() {
         <p className="mt-6 text-text-muted">Carregando...</p>
       ) : (
         <>
-          <div className="mt-4 overflow-x-auto rounded-xl border border-border-soft">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-bg-hover text-text-muted">
+          <div className="mt-4 overflow-x-auto rounded-lg border border-border">
+            <table className="sheet text-sm">
+              <thead>
                 <tr>
-                  <th className="p-3">Nome</th>
-                  <th className="p-3">Email</th>
-                  <th className="p-3">Plano</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Admin</th>
-                  <th className="p-3">Ações</th>
+                  <th>Nome</th>
+                  <th>Email</th>
+                  <th>Plano</th>
+                  <th>Status</th>
+                  <th>Admin</th>
+                  <th>Ações</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user) => (
-                  <tr key={user.id} className="border-t border-border-soft">
+                  <tr key={user.id}>
                     <td className="p-3">
                       <button
                         onClick={() => {

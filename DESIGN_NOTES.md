@@ -62,4 +62,19 @@ Foco visível global em `a/button/input/select/textarea:focus-visible`.
 Todas usam **apenas** tokens já existentes. Exceção deliberada fora da paleta: o ícone
 multicolor do Google (marca de fornecedor, inline em `login/page.tsx`) e as cores da paleta
 oficial nos gráficos do admin (já eram tokens do sistema).
+
+### Redesign "Caderno de Prova" (bloco 2 — 2026-07-14)
+Direção estética escolhida pelo cliente: **cartão-resposta / caderno de prova do ENEM**.
+Paleta 100% mantida; mudou estrutura, raio, sombra, tipografia e forma dos componentes.
+- **Tokens de raio:** `--radius-sm` (6px), `--radius` (8px), `--radius-lg` (12px). Cantos
+  precisos, de documento — não broadsheet 0px.
+- **Sombras** ficaram bem mais sutis; superfícies são definidas pela **borda hairline**.
+- **Novas primitivas:** `.panel` + `.panel-header` + `.panel-body` (folha com cabeçalho por fio),
+  `.hairline`, `.marker` (casa numerada mono), `.bubble` (+ `-selected/-correct/-wrong`, a bolha
+  A–E do cartão-resposta), `.answer` (+ `-selected/-correct/-wrong`, linha de alternativa),
+  `.sheet` (tabela estilo gabarito), `.field-label` (rótulo mono), `.watermark-number`.
+- **Superfícies-assinatura:** alternativas viram bolhas (QuestionCard); navegador vira
+  cartão-resposta; Dashboard vira "Boletim" com régua 0–100; Histórico/Usuários viram folhas
+  de resultados (`.sheet`). Números em mono/tabular por toda parte.
+- **Verificação:** `tsc --noEmit` OK e `next build` OK (todas as rotas compilam).
 </content>

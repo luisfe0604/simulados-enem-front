@@ -165,9 +165,12 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
     <div className="mx-auto max-w-3xl">
       <p className="eyebrow">Praticar</p>
       <h1 className="mt-1 text-3xl font-bold text-text-primary">Simulados ENEM</h1>
+      <p className="mt-1 text-sm text-text-muted">
+        Monte sua prova, cronometre e receba o gabarito na hora.
+      </p>
 
       {!isActive && (
-        <div className="mt-4 flex items-center justify-between gap-4 rounded-xl bg-danger-light p-4">
+        <div className="mt-5 flex items-center justify-between gap-4 rounded-lg border border-border-soft border-l-4 border-l-danger bg-danger-light/50 px-4 py-3">
           <div>
             <strong className="text-danger">Acesso limitado</strong>
             <p className="text-sm text-text-muted">
@@ -183,32 +186,36 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
         </div>
       )}
 
-      <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {MODES.map((m) => (
-          <button
-            key={m.key}
-            onClick={() => !simuladoAtivo && setMode(m.key)}
-            disabled={simuladoAtivo}
-            className={`rounded-xl border p-3 text-left transition-colors ${
-              mode === m.key
-                ? "border-primary bg-primary-light"
-                : "border-border-soft bg-bg-card hover:bg-bg-hover"
-            } ${simuladoAtivo ? "cursor-not-allowed opacity-60" : ""}`}
-          >
-            <div className="font-medium text-text-primary">{m.title}</div>
-            <div className="text-xs text-text-muted">{m.desc}</div>
-          </button>
-        ))}
-      </div>
+      <div className="panel mt-6">
+        <div className="panel-header">
+          <span className="eyebrow">Tipo de prova</span>
+          {simuladoAtivo && (
+            <span className="text-xs text-text-muted">
+              Finalize o atual para trocar
+            </span>
+          )}
+        </div>
+        <div className="panel-body">
+          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
+            {MODES.map((m) => (
+              <button
+                key={m.key}
+                onClick={() => !simuladoAtivo && setMode(m.key)}
+                disabled={simuladoAtivo}
+                className={`rounded-lg border p-3 text-left transition-colors ${
+                  mode === m.key
+                    ? "border-primary bg-primary-light"
+                    : "border-border-soft bg-bg-card hover:bg-bg-hover"
+                } ${simuladoAtivo ? "cursor-not-allowed opacity-60" : ""}`}
+              >
+                <div className="font-medium text-text-primary">{m.title}</div>
+                <div className="text-xs text-text-muted">{m.desc}</div>
+              </button>
+            ))}
+          </div>
 
-      {simuladoAtivo && (
-        <p className="mt-3 text-sm text-text-muted">
-          Finalize o simulado atual para mudar o tipo.
-        </p>
-      )}
-
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        {mode === "custom" && (
+          <div className="mt-4 flex flex-wrap items-center gap-3">
+            {mode === "custom" && (
           <>
             <select
               value={subject}
@@ -263,36 +270,45 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
             Iniciar Prova Dia 2
           </button>
         )}
-        {mode === "full" && (
-          <button onClick={() => generateExamSimulado("full")} className="btn btn-primary">
-            Iniciar Prova Completa
-          </button>
-        )}
+            {mode === "full" && (
+              <button onClick={() => generateExamSimulado("full")} className="btn btn-primary">
+                Iniciar Prova Completa
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
       {questions.length > 0 && (
         // top-16 (64px) = logo abaixo do Navbar (sticky top-0, ~63px de altura),
         // senão os dois ficam sobrepostos na mesma posição ao rolar a página.
-        <div className="sticky top-16 z-10 mt-6 rounded-xl border border-border-soft bg-bg-card p-3 shadow-card">
-          <div className="flex items-center justify-between text-sm text-text-primary">
-            <span>
-              {answeredCount} / {questions.length} respondidas
-            </span>
+        <div className="sticky top-16 z-10 mt-6 rounded-lg border border-border bg-bg-card p-3 shadow-card">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-baseline gap-2">
+              <span className="font-mono text-lg font-bold tabular-nums text-text-primary">
+                {String(answeredCount).padStart(2, "0")}
+                <span className="text-text-muted">
+                  /{String(questions.length).padStart(2, "0")}
+                </span>
+              </span>
+              <span className="eyebrow">respondidas</span>
+            </div>
             <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowNavigator(true)}
                 className="btn btn-outline btn-sm"
               >
-                Questões
+                Cartão-resposta
               </button>
-              <span className="font-mono font-semibold text-primary">
+              <span className="inline-flex items-center gap-1.5 font-mono text-sm font-semibold text-primary">
+                <span aria-hidden>⏱</span>
                 {formatTime(elapsed)}
               </span>
             </div>
           </div>
-          <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-bg-hover">
+          <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-bg-hover">
             <div
-              className="h-full bg-primary transition-all"
+              className="h-full rounded-full bg-primary transition-all"
               style={{ width: `${(answeredCount / questions.length) * 100}%` }}
             />
           </div>
@@ -373,25 +389,26 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
             className="max-h-[80vh] w-full max-w-md overflow-y-auto rounded-2xl border border-border-soft bg-bg-card p-5 shadow-strong"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="font-semibold text-text-primary">
-                Navegar pelas questões
-              </h3>
-              <span className="text-sm text-text-muted tabular">
+            <div className="mb-1 flex items-center justify-between">
+              <span className="eyebrow">Cartão-resposta</span>
+              <span className="font-mono text-sm font-semibold tabular-nums text-text-primary">
                 {answeredCount}/{questions.length}
               </span>
             </div>
+            <p className="mb-4 text-xs text-text-muted">
+              Toque numa questão para ir até ela.
+            </p>
             <div className="mb-4 flex items-center gap-4 text-xs text-text-muted">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-primary" />
+                <span className="h-3 w-3 rounded-full bg-primary" />
                 Respondida
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full border border-border" />
+                <span className="h-3 w-3 rounded-full border-[1.5px] border-border" />
                 Pendente
               </span>
             </div>
-            <div className="grid grid-cols-6 gap-2">
+            <div className="grid grid-cols-6 justify-items-center gap-2.5">
               {questions.map((q, index) => {
                 const answered = answers[q.id as number];
                 return (
@@ -403,11 +420,8 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
                         ?.scrollIntoView({ behavior: "smooth" });
                       setShowNavigator(false);
                     }}
-                    className={`rounded-lg py-2 text-sm ${
-                      answered
-                        ? "bg-primary text-white"
-                        : "border border-border text-text-primary hover:bg-bg-hover"
-                    }`}
+                    aria-label={`Questão ${index + 1}${answered ? " (respondida)" : ""}`}
+                    className={`bubble ${answered ? "bubble-selected" : "hover:border-primary"}`}
                   >
                     {index + 1}
                   </button>

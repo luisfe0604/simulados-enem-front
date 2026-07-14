@@ -124,15 +124,23 @@ export default function QuestionCard({
   const qid = (q.id ?? q.question_id) as number;
 
   return (
-    <div className="card mb-4 p-5">
-      <p className="eyebrow mb-3">Questão {index + 1}</p>
+    <div className="card mb-4 p-5 sm:p-6">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="marker">{String(index + 1).padStart(2, "0")}</span>
+          <span className="eyebrow">Questão</span>
+        </div>
+        {q.exam_name && (
+          <span className="text-xs text-text-muted">{q.exam_name}</span>
+        )}
+      </div>
 
       <div className="space-y-2 leading-relaxed text-text-primary [&_img]:my-2 [&_img]:max-w-full">
         {intro && <p dangerouslySetInnerHTML={{ __html: intro }} />}
         {question && <p dangerouslySetInnerHTML={{ __html: question }} />}
       </div>
 
-      <div className="mt-4 space-y-2">
+      <div className="mt-5 space-y-2">
         {["A", "B", "C", "D", "E"].map((letter) => {
           const optionText = q[`option_${letter.toLowerCase()}` as keyof Question];
           if (!optionText) return null;
@@ -142,34 +150,40 @@ export default function QuestionCard({
           const isCorrect = q.correct_option === letter;
           const isWrongSelected = result && isSelected && !isCorrect;
 
-          let cls =
-            "w-full rounded-lg border px-3 py-2 text-left transition-colors ";
+          let rowCls = "answer";
+          let bubbleCls = "bubble";
           if (result && isCorrect) {
-            cls += "border-success bg-success-light text-success";
+            rowCls += " answer-correct";
+            bubbleCls += " bubble-correct";
           } else if (result && isWrongSelected) {
-            cls += "border-danger bg-danger-light text-danger";
-          } else if (!result && isSelected) {
-            cls += "border-primary bg-primary-light";
-          } else {
-            cls += "border-border hover:bg-bg-hover";
+            rowCls += " answer-wrong";
+            bubbleCls += " bubble-wrong";
+          } else if (isSelected) {
+            rowCls += " answer-selected";
+            bubbleCls += " bubble-selected";
           }
 
           return (
             <button
               key={letter}
-              className={cls}
+              className={rowCls}
               disabled={disabled}
               onClick={() => onSelect?.(qid, letter)}
             >
-              <strong>{letter})</strong> {optionText}
+              <span className={bubbleCls} aria-hidden>
+                {letter}
+              </span>
+              <span className="flex-1">{optionText}</span>
+              {Boolean(result && isCorrect) && (
+                <span className="font-mono text-sm font-bold text-success">✓</span>
+              )}
+              {Boolean(result && isWrongSelected) && (
+                <span className="font-mono text-sm font-bold text-danger">✕</span>
+              )}
             </button>
           );
         })}
       </div>
-
-      {q.exam_name && (
-        <p className="mt-3 text-sm text-text-muted">{q.exam_name}</p>
-      )}
     </div>
   );
 }

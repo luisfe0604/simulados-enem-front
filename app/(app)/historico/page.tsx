@@ -123,7 +123,7 @@ export default function HistoricoPage() {
       </h1>
 
       {!isActive && (
-        <div className="mt-4 flex items-center justify-between gap-4 rounded-xl bg-danger-light p-4">
+        <div className="mt-5 flex items-center justify-between gap-4 rounded-lg border border-border-soft border-l-4 border-l-danger bg-danger-light/50 px-4 py-3">
           <div>
             <strong className="text-danger">Acesso limitado</strong>
             <p className="text-sm text-text-muted">
@@ -139,15 +139,15 @@ export default function HistoricoPage() {
         </div>
       )}
 
-      <div className="mt-4 flex flex-wrap gap-2">
+      <div className="mt-5 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
           <button
             key={f.key}
             onClick={() => setActiveFilter(f.key)}
-            className={`rounded-full px-3 py-1 text-sm transition-colors ${
+            className={`rounded-full border px-3 py-1 text-sm transition-colors ${
               activeFilter === f.key
-                ? "bg-primary text-white"
-                : "border border-border text-text-primary hover:bg-bg-hover"
+                ? "border-primary bg-primary text-white"
+                : "border-border-soft text-text-primary hover:border-primary hover:bg-bg-hover"
             }`}
           >
             {f.label}
@@ -222,25 +222,25 @@ export default function HistoricoPage() {
             ))}
           </div>
 
-          {/* Desktop: table */}
-          <div className="mt-4 hidden overflow-x-auto rounded-xl border border-border-soft md:block">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-bg-hover text-text-muted">
+          {/* Desktop: folha de resultados */}
+          <div className="mt-4 hidden overflow-x-auto rounded-lg border border-border md:block">
+            <table className="sheet text-sm">
+              <thead>
                 <tr>
-                  <th className="p-3"></th>
-                  <th className="cursor-pointer p-3" onClick={() => handleSort("created_at")}>
-                    Data <span>{renderSortIcon("created_at")}</span>
+                  <th className="w-8"></th>
+                  <th className="cursor-pointer select-none" onClick={() => handleSort("created_at")}>
+                    Data <span className="text-text-muted">{renderSortIcon("created_at")}</span>
                   </th>
-                  <th className="cursor-pointer p-3" onClick={() => handleSort("total_questions")}>
-                    Questões <span>{renderSortIcon("total_questions")}</span>
+                  <th className="cursor-pointer select-none" onClick={() => handleSort("total_questions")}>
+                    Questões <span className="text-text-muted">{renderSortIcon("total_questions")}</span>
                   </th>
-                  <th className="cursor-pointer p-3" onClick={() => handleSort("duration_seconds")}>
-                    Tempo <span>{renderSortIcon("duration_seconds")}</span>
+                  <th className="cursor-pointer select-none" onClick={() => handleSort("duration_seconds")}>
+                    Tempo <span className="text-text-muted">{renderSortIcon("duration_seconds")}</span>
                   </th>
-                  <th className="cursor-pointer p-3" onClick={() => handleSort("score")}>
-                    Nota <span>{renderSortIcon("score")}</span>
+                  <th className="cursor-pointer select-none" onClick={() => handleSort("score")}>
+                    Nota <span className="text-text-muted">{renderSortIcon("score")}</span>
                   </th>
-                  <th className="p-3">Treine</th>
+                  <th>Treine</th>
                 </tr>
               </thead>
               <tbody>
@@ -248,20 +248,20 @@ export default function HistoricoPage() {
                   <React.Fragment key={s.id}>
                     <tr
                       onClick={() => toggleExpand(s.id)}
-                      className="cursor-pointer border-t border-border-soft hover:bg-bg-hover"
+                      className="cursor-pointer"
                     >
-                      <td className="p-3 text-text-muted">
+                      <td className="text-text-muted">
                         {expanded === s.id ? "▾" : "▸"}
                       </td>
-                      <td className="p-3 text-text-primary">
+                      <td className="text-text-primary">
                         {new Date(s.created_at).toLocaleTimeString("pt-BR")} -{" "}
                         {new Date(s.created_at).toLocaleDateString("pt-BR")}
                       </td>
-                      <td className="p-3 text-text-primary">{s.total_questions}</td>
-                      <td className="p-3 text-text-primary">
+                      <td className="text-text-primary">{s.total_questions}</td>
+                      <td className="text-text-primary">
                         {formatDuration(s.duration_seconds)}
                       </td>
-                      <td className="p-3">
+                      <td>
                         <span
                           className="score-chip"
                           style={{

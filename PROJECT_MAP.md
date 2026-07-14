@@ -97,5 +97,21 @@ Eixos de melhoria (todos dentro da paleta, sem tocar lógica nem o hero do dashb
 - **Verificação:** `tsc --noEmit` OK; eslint sem novos erros (5 pré-existentes, todos de lógica);
   primitivas confirmadas via computed styles no browser. _Nota: watcher do Turbopack no Windows
   pode não pegar mudanças em `globals.css` — se o CSS parecer velho, reiniciar o dev server._
+
+**2026-07-14 — Bloco 2: redesign visual "Caderno de Prova" (drástico, só UI).**
+Cliente aprovou mudança drástica mantendo a paleta; dashboard hero também aberto ao redesign.
+- `globals.css`: nova linguagem de cartão-resposta — tokens de raio, sombras sutis, e primitivas
+  `.panel/.panel-header/.panel-body`, `.marker`, `.bubble*`, `.answer*`, `.sheet`, `.field-label`,
+  `.watermark-number`, `.hairline`. `.card`/`.btn`/`.input` reformulados (cantos precisos).
+- `QuestionCard`: alternativas A–E viram **bolhas** de cartão-resposta; nº da questão em `.marker`.
+- `SimuladoRunner`: seleção de prova em `.panel`; barra de progresso em mono; **navegador vira
+  cartão-resposta** (grid de bolhas).
+- `page.tsx` (Dashboard): hero redesenhado como **"Boletim"** com régua 0–100 e marca d'água mono
+  (dado e lógica preservados); últimos simulados em painel de linhas; indicadores em cells.
+- `historico`/`users`: tabelas viram **folhas de resultados** (`.sheet`); banners com faixa de acento.
+- `conta`: rótulos em `.field-label`. `auth/layout`: marca d'água "1000" em mono.
+- **Verificação:** `tsc --noEmit` OK e **`next build` OK** (todas as rotas compilam). Screenshots
+  não funcionam neste ambiente; páginas autenticadas validadas por typecheck + build + CSS no browser.
+- Detalhe: o card hero deixou de ser preservado **por decisão explícita do cliente** nesta rodada.
 </content>
 </invoke>

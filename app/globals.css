@@ -29,11 +29,16 @@
 
   --color-focus: #0ea5e9;
 
-  --shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.05);
-  --shadow-strong: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-strong: 0 12px 32px rgba(15, 23, 42, 0.12);
 
-  --color-overlay: rgba(0, 0, 0, 0.35);
+  --color-overlay: rgba(15, 23, 42, 0.4);
+
+  /* Escala de raio — cantos precisos, de "documento", sem virar broadsheet 0px. */
+  --radius-sm: 0.375rem;
+  --radius: 0.5rem;
+  --radius-lg: 0.75rem;
 }
 
 .dark {
@@ -129,35 +134,152 @@ h4,
   color: var(--color-secondary);
 }
 
-/* Card padrão. Transição suave para hover/tema. */
+/* =========================================================================
+   Linguagem "Caderno de Prova" — cartão-resposta do ENEM como sistema visual.
+   Superfícies são folhas de papel: borda hairline, cantos precisos, sombra
+   mínima. Números em mono. Alternativas viram bolhas A–E. A paleta é a mesma.
+   ========================================================================= */
+
+/* Card / folha. Definido pela borda, não pela sombra. */
 .card {
   background: var(--color-bg-card);
   border: 1px solid var(--color-border-soft);
-  border-radius: 1rem;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   transition: box-shadow 0.15s, border-color 0.15s, transform 0.15s;
 }
-
-/* Card clicável: leve elevação no hover — dá affordance sem pesar. */
 .card-interactive {
   cursor: pointer;
 }
 .card-interactive:hover {
-  transform: translateY(-2px);
+  border-color: var(--color-primary);
   box-shadow: var(--shadow-strong);
-  border-color: var(--color-border);
 }
 
-/* Botão primário e variantes — estilo consistente em todo o app. */
+/* Painel: folha com cabeçalho separado por fio — estrutura de "seção de prova". */
+.panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  background: color-mix(in srgb, var(--color-bg-hover) 45%, var(--color-bg-card));
+}
+.panel-body {
+  padding: 1.25rem;
+}
+
+/* Fio horizontal reutilizável. */
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--color-border-soft);
+}
+
+/* Marcador de número da questão — a "casa" numerada do cartão-resposta. */
+.marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-family: var(--font-mono), monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary);
+  background: var(--color-bg-card);
+}
+.dark .marker {
+  color: var(--color-secondary);
+}
+
+/* Bolha do cartão-resposta: círculo com a letra da alternativa. */
+.bubble {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-card);
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+}
+.bubble-selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: #fff;
+}
+.bubble-correct {
+  border-color: var(--color-success);
+  background: var(--color-success);
+  color: #fff;
+}
+.bubble-wrong {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: #fff;
+}
+
+/* Linha de alternativa: bolha + texto, comportando-se como um botão do cartão. */
+.answer {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  width: 100%;
+  text-align: left;
+  padding: 0.7rem 0.875rem;
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius);
+  color: var(--color-text-primary);
+  background: var(--color-bg-card);
+  transition: border-color 0.12s, background 0.12s;
+  cursor: pointer;
+}
+.answer:hover:not(:disabled) {
+  border-color: var(--color-border);
+  background: var(--color-bg-hover);
+}
+.answer:disabled {
+  cursor: default;
+}
+.answer-selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+.answer-correct {
+  border-color: var(--color-success);
+  background: var(--color-success-light);
+}
+.answer-wrong {
+  border-color: var(--color-danger);
+  background: var(--color-danger-light);
+}
+
+/* Botões — cantos precisos, mesma paleta. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 0.625rem;
+  border-radius: var(--radius);
   font-weight: 600;
-  padding: 0.625rem 1.25rem;
-  transition: background-color 0.15s, box-shadow 0.15s, transform 0.05s;
+  padding: 0.6rem 1.15rem;
+  transition: background-color 0.15s, box-shadow 0.15s, transform 0.05s, border-color 0.15s;
   cursor: pointer;
 }
 .btn:active {
@@ -176,18 +298,18 @@ h4,
   cursor: not-allowed;
 }
 .btn-outline {
-  background: transparent;
+  background: var(--color-bg-card);
   color: var(--color-text-primary);
   border: 1px solid var(--color-border);
 }
 .btn-outline:hover {
   background: var(--color-bg-hover);
+  border-color: var(--color-primary);
 }
 .btn-outline:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-/* Ação destrutiva (cancelar/excluir): contorno vermelho, preenche no hover. */
 .btn-danger {
   background: transparent;
   color: var(--color-danger);
@@ -196,20 +318,19 @@ h4,
 .btn-danger:hover {
   background: var(--color-danger-light);
 }
-/* Modificadores de tamanho/largura. */
 .btn-sm {
-  padding: 0.4rem 0.85rem;
+  padding: 0.38rem 0.8rem;
   font-size: 0.8125rem;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 .btn-block {
   width: 100%;
 }
 
-/* Campo de formulário — input/select/textarea com foco em anel suave. */
+/* Campo de formulário — linha de preenchimento com foco em anel. */
 .input {
   width: 100%;
-  border-radius: 0.625rem;
+  border-radius: var(--radius);
   border: 1px solid var(--color-border);
   background: var(--color-bg-input);
   padding: 0.5rem 0.75rem;
@@ -230,7 +351,50 @@ h4,
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus) 22%, transparent);
 }
 
-/* Pílulas de status/rótulo — unifica os badges espalhados pelo app. */
+/* Rótulo de campo em mono — combina com o resto da linguagem. */
+.field-label {
+  display: block;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Folha de resultados: tabela no estilo cartão/gabarito. */
+.sheet {
+  width: 100%;
+  border-collapse: collapse;
+}
+.sheet thead th {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.sheet tbody td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid var(--color-border-soft);
+  font-variant-numeric: tabular-nums;
+}
+.sheet tbody tr {
+  transition: background 0.12s;
+}
+.sheet tbody tr:hover {
+  background: var(--color-bg-hover);
+}
+.sheet tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Pílulas de status/rótulo. */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -272,7 +436,7 @@ h4,
   );
   background-size: 400% 100%;
   animation: skeleton-shimmer 1.4s ease infinite;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-sm);
 }
 @keyframes skeleton-shimmer {
   0% {
@@ -283,13 +447,24 @@ h4,
   }
 }
 
-/* Chip de nota: verde se >=50, vermelho se <50. */
+/* Chip de nota: mono, tabular — verde se >=50, vermelho se <50. */
 .score-chip {
   font-family: var(--font-mono), monospace;
   font-variant-numeric: tabular-nums;
-  font-weight: 600;
+  font-weight: 700;
   padding: 0.125rem 0.5rem;
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
+}
+
+/* Marca d'água numérica gigante em mono — remete à nota (0–1000). */
+.watermark-number {
+  font-family: var(--font-mono), monospace;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  line-height: 0.8;
+  letter-spacing: -0.03em;
+  pointer-events: none;
+  user-select: none;
 }
 
 /* Acessibilidade: foco visível consistente (quality floor). */

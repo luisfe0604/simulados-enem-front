@@ -67,7 +67,7 @@ export default function DashboardPage() {
       </div>
 
       {!isActive && (
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-primary-light bg-primary-light/60 p-5">
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border-soft border-l-4 border-l-primary bg-primary-light/50 px-5 py-4">
           <div>
             <strong className="text-primary">Desbloqueie tudo</strong>
             <p className="text-sm text-text-muted">
@@ -80,34 +80,72 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Hero: média em destaque — a "nota" é o protagonista da marca. */}
-      <div className="mt-6 grid gap-4 lg:grid-cols-3">
-        <div className="brand-gradient relative overflow-hidden rounded-2xl p-6 text-white lg:col-span-1">
-          <p className="eyebrow text-white/70">Média geral</p>
-          <div className="mt-2 flex items-baseline gap-1">
-            <span className="font-mono text-6xl font-bold tabular-nums">
-              {hasData ? stats.average.toFixed(0) : "—"}
-            </span>
-            <span className="text-2xl font-semibold text-white/80">%</span>
-          </div>
-          <p className="mt-1 text-sm text-white/70">
+      {/* Boletim: a média situada numa régua 0–100, como a nota de um exame. */}
+      <div className="panel mt-6">
+        <div className="panel-header">
+          <span className="eyebrow">Boletim</span>
+          <span className="text-xs text-text-muted">
             {hasData
               ? `em ${stats.total} simulado${stats.total > 1 ? "s" : ""}`
-              : "Faça seu primeiro simulado"}
-          </p>
+              : "sem dados ainda"}
+          </span>
+        </div>
+        <div className="panel-body relative overflow-hidden">
+          <p className="text-sm text-text-muted">Média geral de acertos</p>
+          <div className="mt-1 flex items-baseline gap-1">
+            <span
+              className="font-mono text-6xl font-bold tabular-nums"
+              style={{
+                color: !hasData
+                  ? "var(--color-text-muted)"
+                  : stats.average >= 50
+                    ? "var(--color-success)"
+                    : "var(--color-danger)",
+              }}
+            >
+              {hasData ? stats.average.toFixed(0) : "—"}
+            </span>
+            <span className="text-2xl font-semibold text-text-muted">%</span>
+          </div>
+
+          {/* Régua 0–100 com marcador na média e o corte de 50%. */}
+          <div className="mt-5 max-w-md">
+            <div className="relative h-2 w-full rounded-full bg-bg-hover">
+              <div className="absolute left-1/2 top-1/2 h-3.5 w-px -translate-x-1/2 -translate-y-1/2 bg-border" />
+              <div
+                className="absolute top-1/2 h-4 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-sm"
+                style={{
+                  left: `${hasData ? Math.min(Math.max(stats.average, 0), 100) : 0}%`,
+                  background: !hasData
+                    ? "var(--color-border)"
+                    : stats.average >= 50
+                      ? "var(--color-success)"
+                      : "var(--color-danger)",
+                }}
+              />
+            </div>
+            <div className="mt-1.5 flex justify-between font-mono text-[0.625rem] text-text-muted">
+              <span>0</span>
+              <span>50</span>
+              <span>100</span>
+            </div>
+          </div>
+
           <div
             aria-hidden
-            className="pointer-events-none absolute -bottom-8 -right-4 select-none font-display text-[7rem] font-bold leading-none text-white/10"
+            className="watermark-number absolute -bottom-6 -right-2 text-[7rem]"
+            style={{ color: "color-mix(in srgb, var(--color-text-primary) 4%, transparent)" }}
           >
             {hasData ? stats.average.toFixed(0) : "0"}
           </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:col-span-2">
-          <StatCard eyebrow="Total" label="Simulados" value={String(stats.total)} />
-          <StatCard eyebrow="Volume" label="Questões" value={String(stats.totalQuestions)} />
-          <StatCard eyebrow="Ritmo" label="Seg / questão" value={`${stats.avgTimePerQuestion}s`} />
-        </div>
+      {/* Indicadores */}
+      <div className="mt-4 grid grid-cols-3 gap-3 sm:gap-4">
+        <StatCard eyebrow="Total" label="Simulados" value={String(stats.total)} />
+        <StatCard eyebrow="Volume" label="Questões" value={String(stats.totalQuestions)} />
+        <StatCard eyebrow="Ritmo" label="Seg / questão" value={`${stats.avgTimePerQuestion}s`} />
       </div>
 
       <div className="mt-8">
@@ -118,27 +156,29 @@ export default function DashboardPage() {
               onClick={() => router.push("/historico")}
               className="text-sm font-medium text-primary hover:underline"
             >
-              Ver histórico
+              Ver histórico →
             </button>
           )}
         </div>
 
         {!hasData ? (
           <div className="card flex flex-col items-center gap-3 p-10 text-center">
-            <p className="text-text-muted">Você ainda não fez nenhum simulado.</p>
+            <p className="text-text-muted">
+              Nenhum simulado ainda. Faça o primeiro para abrir seu boletim.
+            </p>
             <button onClick={() => router.push("/simulado")} className="btn btn-primary">
               Começar agora
             </button>
           </div>
         ) : (
-          <div className="space-y-2">
+          <div className="panel divide-y divide-border-soft">
             {simulados.slice(0, 5).map((s) => {
               const date = new Date(s.created_at);
               const good = s.score >= 50;
               return (
                 <div
                   key={s.id}
-                  className="card flex items-center justify-between px-4 py-3"
+                  className="flex items-center justify-between gap-3 px-4 py-3.5"
                 >
                   <div className="flex items-center gap-3">
                     <span
@@ -156,7 +196,7 @@ export default function DashboardPage() {
                       {s.total_questions} questões
                     </span>
                   </div>
-                  <span className="text-sm text-text-muted tabular">
+                  <span className="font-mono text-sm text-text-muted tabular-nums">
                     {date.toLocaleDateString("pt-BR")}
                   </span>
                 </div>

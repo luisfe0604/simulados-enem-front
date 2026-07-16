@@ -8,7 +8,7 @@ export async function requireAdmin(): Promise<number> {
   const userId = await requireUserId();
 
   const { rows } = await pool.query(
-    "SELECT is_admin FROM public.users WHERE id = $1",
+    "SELECT is_admin FROM public.users_enem WHERE id = $1",
     [userId],
   );
 
@@ -26,7 +26,7 @@ export async function requireActiveSubscription(): Promise<number> {
   const userId = await requireUserId();
 
   const { rows } = await pool.query(
-    "SELECT subscription_status, is_admin FROM public.users WHERE id = $1",
+    "SELECT subscription_status, is_admin FROM public.users_enem WHERE id = $1",
     [userId],
   );
 

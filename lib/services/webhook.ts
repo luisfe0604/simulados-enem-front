@@ -36,7 +36,7 @@ export async function handleStripeWebhook(
         : null;
 
       await pool.query(
-        `UPDATE public.users
+        `UPDATE public.users_enem
            SET subscription_status = $2,
                plan = 'premium',
                trial_end = $3,
@@ -58,7 +58,7 @@ export async function handleStripeWebhook(
     case "invoice.paid": {
       const invoice = event.data.object as Stripe.Invoice;
       await pool.query(
-        `UPDATE public.users SET subscription_status = 'active'
+        `UPDATE public.users_enem SET subscription_status = 'active'
            WHERE gateway_customer_id = $1`,
         [invoice.customer],
       );
@@ -72,7 +72,7 @@ export async function handleStripeWebhook(
         : null;
 
       await pool.query(
-        `UPDATE public.users
+        `UPDATE public.users_enem
            SET subscription_status = $1,
                cancel_at_period_end = $2,
                subscription_cancelled_at = $3
@@ -90,7 +90,7 @@ export async function handleStripeWebhook(
     case "invoice.payment_failed": {
       const invoice = event.data.object as Stripe.Invoice;
       await pool.query(
-        `UPDATE public.users SET subscription_status = 'past_due'
+        `UPDATE public.users_enem SET subscription_status = 'past_due'
            WHERE gateway_customer_id = $1`,
         [invoice.customer],
       );
@@ -100,7 +100,7 @@ export async function handleStripeWebhook(
     case "customer.subscription.deleted": {
       const subscription = event.data.object as Stripe.Subscription;
       await pool.query(
-        `UPDATE public.users
+        `UPDATE public.users_enem
            SET subscription_status = 'canceled', cancel_at_period_end = false
            WHERE gateway_subscription_id = $1`,
         [subscription.id],

@@ -31,7 +31,7 @@ export async function createCheckoutSession(
 
 export async function cancelSubscription(userId: number): Promise<{ message: string }> {
   const result = await pool.query<{ gateway_subscription_id: string | null }>(
-    "SELECT gateway_subscription_id FROM public.users WHERE id = $1",
+    "SELECT gateway_subscription_id FROM public.users_enem WHERE id = $1",
     [userId],
   );
   const user = result.rows[0];
@@ -49,7 +49,7 @@ export async function cancelSubscription(userId: number): Promise<{ message: str
 
 export async function reactivateSubscription(userId: number): Promise<{ message: string }> {
   const result = await pool.query<{ gateway_subscription_id: string | null }>(
-    "SELECT gateway_subscription_id FROM public.users WHERE id = $1",
+    "SELECT gateway_subscription_id FROM public.users_enem WHERE id = $1",
     [userId],
   );
   const user = result.rows[0];
@@ -69,7 +69,7 @@ export async function getSubscriptionStatus(userId: number) {
   const result = await pool.query(
     `SELECT subscription_status, cancel_at_period_end,
             subscription_cancelled_at, plan, is_admin
-       FROM public.users
+       FROM public.users_enem
        WHERE id = $1`,
     [userId],
   );
@@ -91,7 +91,7 @@ export async function syncCustomerSubscription(customerId: string) {
 
   if (!subs.data.length) {
     await pool.query(
-      `UPDATE public.users
+      `UPDATE public.users_enem
          SET subscription_status = 'canceled', gateway_subscription_id = NULL
          WHERE gateway_customer_id = $1`,
       [customerId],
@@ -120,7 +120,7 @@ export async function syncCustomerSubscription(customerId: string) {
     : null;
 
   const result = await pool.query(
-    `UPDATE public.users
+    `UPDATE public.users_enem
        SET subscription_status = $1,
            gateway_subscription_id = $2,
            cancel_at_period_end = $3,

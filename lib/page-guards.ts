@@ -11,7 +11,7 @@ export async function requireAdminPage(): Promise<number> {
   if (!session) redirect("/login");
 
   const { rows } = await pool.query<{ is_admin: boolean }>(
-    "SELECT is_admin FROM public.users WHERE id = $1",
+    "SELECT is_admin FROM public.users_enem WHERE id = $1",
     [session.userId],
   );
 

@@ -2,8 +2,6 @@ import pool from "@/lib/db";
 
 // Portado do lado ENEM do backend. O lado "OAB" (tabelas sem sufixo _enem)
 // foi deliberadamente deixado de fora — este app é só do ENEM.
-// A tabela `simulated_exams` (cabeçalho) é compartilhada; o detalhe por questão
-// vive em `simulated_exam_questions_enem` e as questões em `questions_enem`.
 
 export interface SimuladoAnswer {
   question_id: number;
@@ -175,7 +173,7 @@ export async function finishSimulado({
     const score = (correctAnswers / totalQuestions) * 100;
 
     const simulatedResult = await client.query(
-      `INSERT INTO public.simulated_exams
+      `INSERT INTO public.simulated_exams_enem
          (user_id, total_questions, correct_answers, score, duration_seconds)
        VALUES ($1,$2,$3,$4,$5)
        RETURNING *`,
@@ -217,7 +215,7 @@ export async function listSimulados({
 
   const result = await pool.query(
     `SELECT id, total_questions, correct_answers, score, created_at, duration_seconds
-       FROM public.simulated_exams
+       FROM public.simulated_exams_enem
        WHERE user_id = $1
        ORDER BY created_at DESC
        LIMIT $2 OFFSET $3`,
@@ -227,7 +225,7 @@ export async function listSimulados({
   const simulados = result.rows.map((s) => ({ ...s, score: Number(s.score) }));
 
   const countResult = await pool.query<{ count: string }>(
-    `SELECT COUNT(*) FROM public.simulated_exams WHERE user_id = $1`,
+    `SELECT COUNT(*) FROM public.simulated_exams_enem WHERE user_id = $1`,
     [userId],
   );
 
@@ -248,7 +246,7 @@ export async function getSimuladoById({
 }) {
   const simuladoResult = await pool.query(
     `SELECT id, total_questions, correct_answers, score, created_at
-       FROM public.simulated_exams
+       FROM public.simulated_exams_enem
        WHERE id = $1 AND user_id = $2`,
     [simulatedId, userId],
   );
@@ -281,7 +279,7 @@ export async function generateWrongQuestionsSimulado({
     `SELECT question_id FROM (
         SELECT DISTINCT question_id
           FROM simulated_exam_questions_enem seq
-          JOIN simulated_exams se ON se.id = seq.simulated_exam_id
+          JOIN simulated_exams_enem se ON se.id = seq.simulated_exam_id
           WHERE se.user_id = $1 AND seq.is_correct = false
       ) q
       ORDER BY RANDOM()

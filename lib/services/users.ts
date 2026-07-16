@@ -21,7 +21,7 @@ export async function registerUser({
   }
 
   const existing = await pool.query(
-    "SELECT id FROM public.users WHERE email = $1",
+    "SELECT id FROM public.users_enem WHERE email = $1",
     [email],
   );
   if (existing.rows.length > 0) {
@@ -31,7 +31,7 @@ export async function registerUser({
   const hashed = await hashPassword(password);
 
   const result = await pool.query<PublicUser>(
-    `INSERT INTO public.users
+    `INSERT INTO public.users_enem
        (name, email, password_hash, plan, subscription_status)
      VALUES ($1, $2, $3, 'free', 'inactive')
      RETURNING id, name, email`,
@@ -49,7 +49,7 @@ export async function loginUser({
   password: string;
 }): Promise<number> {
   const result = await pool.query<{ id: number; password_hash: string }>(
-    "SELECT id, password_hash FROM public.users WHERE email = $1",
+    "SELECT id, password_hash FROM public.users_enem WHERE email = $1",
     [email],
   );
   const user = result.rows[0];
@@ -74,7 +74,7 @@ export async function findOrCreateByEmail({
   email: string;
 }): Promise<{ id: number }> {
   const existing = await pool.query<{ id: number }>(
-    "SELECT id FROM public.users WHERE email = $1",
+    "SELECT id FROM public.users_enem WHERE email = $1",
     [email],
   );
   if (existing.rows.length > 0) {
@@ -82,7 +82,7 @@ export async function findOrCreateByEmail({
   }
 
   const result = await pool.query<{ id: number }>(
-    `INSERT INTO public.users
+    `INSERT INTO public.users_enem
        (name, email, plan, subscription_status, created_at)
      VALUES ($1, $2, 'free', 'inactive', NOW())
      RETURNING id`,
@@ -93,31 +93,31 @@ export async function findOrCreateByEmail({
 }
 
 export async function findUserById(id: number) {
-  const result = await pool.query("SELECT * FROM public.users WHERE id = $1", [
+  const result = await pool.query("SELECT * FROM public.users_enem WHERE id = $1", [
     id,
   ]);
   return result.rows[0];
 }
 
 export async function getMetrics() {
-  const totalUsersRes = await pool.query("SELECT COUNT(*) FROM public.users;");
+  const totalUsersRes = await pool.query("SELECT COUNT(*) FROM public.users_enem;");
 
   const statusRes = await pool.query(`
     SELECT subscription_status, COUNT(*)
-      FROM public.users
+      FROM public.users_enem
       GROUP BY subscription_status;
   `);
 
   const usersGrowthRes = await pool.query(`
     SELECT TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM') AS month, COUNT(*)
-      FROM public.users
+      FROM public.users_enem
       GROUP BY month
       ORDER BY month;
   `);
 
   const subsGrowthRes = await pool.query(`
     SELECT TO_CHAR(DATE_TRUNC('month', created_at), 'YYYY-MM') AS month, COUNT(*)
-      FROM public.users
+      FROM public.users_enem
       WHERE subscription_status = 'active'
       GROUP BY month
       ORDER BY month;
@@ -165,13 +165,13 @@ export async function listUsers({
   }
 
   const countResult = await pool.query(
-    `SELECT COUNT(*) FROM public.users ${where}`,
+    `SELECT COUNT(*) FROM public.users_enem ${where}`,
     params,
   );
 
   const usersResult = await pool.query(
     `SELECT id, name, email, plan, subscription_status, is_admin, created_at
-       FROM public.users
+       FROM public.users_enem
        ${where}
        ORDER BY created_at DESC
        LIMIT $${params.length + 1}
@@ -189,7 +189,7 @@ export async function listUsers({
 
 export async function toggleAdmin(userId: string) {
   const { rows } = await pool.query(
-    `UPDATE public.users SET is_admin = NOT is_admin WHERE id = $1 RETURNING *`,
+    `UPDATE public.users_enem SET is_admin = NOT is_admin WHERE id = $1 RETURNING *`,
     [userId],
   );
   return rows[0];
@@ -197,7 +197,7 @@ export async function toggleAdmin(userId: string) {
 
 export async function grantPremium(userId: string) {
   const { rows } = await pool.query(
-    `UPDATE public.users
+    `UPDATE public.users_enem
        SET plan = 'premium', subscription_status = 'active'
        WHERE id = $1 RETURNING *`,
     [userId],
@@ -207,7 +207,7 @@ export async function grantPremium(userId: string) {
 
 export async function revokePremium(userId: string) {
   const { rows } = await pool.query(
-    `UPDATE public.users
+    `UPDATE public.users_enem
        SET plan = 'free', subscription_status = 'inactive'
        WHERE id = $1 RETURNING *`,
     [userId],
@@ -218,7 +218,7 @@ export async function revokePremium(userId: string) {
 export async function getUser(userId: string) {
   const { rows } = await pool.query(
     `SELECT id, name, email, plan, subscription_status, is_admin, created_at
-       FROM public.users WHERE id = $1`,
+       FROM public.users_enem WHERE id = $1`,
     [userId],
   );
   return rows[0] ?? null;

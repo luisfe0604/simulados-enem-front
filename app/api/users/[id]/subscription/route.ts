@@ -16,7 +16,7 @@ export async function DELETE(
     const { id } = await params;
 
     const { rows } = await pool.query(
-      "SELECT gateway_subscription_id FROM public.users WHERE id = $1",
+      "SELECT gateway_subscription_id FROM public.users_enem WHERE id = $1",
       [id],
     );
     const user = rows[0];
@@ -31,7 +31,7 @@ export async function DELETE(
     }
 
     const result = await pool.query(
-      `UPDATE public.users
+      `UPDATE public.users_enem
          SET plan = 'free',
              subscription_status = 'inactive',
              gateway_subscription_id = NULL

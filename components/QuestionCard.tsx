@@ -138,7 +138,7 @@ export default function QuestionCard({
               onClick={() => onAskAI(q)}
               className="text-xs text-text-muted underline-offset-2 hover:text-primary hover:underline"
             >
-              🤖 Explicar com IA
+              Explicar com IA
             </button>
           )}
           {q.exam_name && (

@@ -3,6 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { apiFetch } from "@/lib/client-api";
 
+// Mantido em sincronia com ASSISTANT_NAME em lib/services/assistant.ts
+// (não importamos direto de lá para não misturar código client/server).
+const ASSISTANT_NAME = "Nex";
+
 interface ChatMessage {
   role: "user" | "model";
   text: string;
@@ -59,22 +63,12 @@ export default function AssistenteChat() {
 
   return (
     <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-3xl flex-col">
-      <p className="eyebrow">Tire suas dúvidas</p>
-      <h1 className="mt-1 text-3xl font-bold text-text-primary">
-        Assistente de IA
-      </h1>
-      <p className="mt-1 text-sm text-text-muted">
-        Pergunte sobre conteúdos de nível fundamental e médio. A conversa não
-        fica salva — ao sair daqui, ela se perde.
-      </p>
+      <h1 className="text-2xl font-bold text-text-primary">{ASSISTANT_NAME}</h1>
 
       <div className="card mt-4 flex flex-1 flex-col overflow-hidden p-0">
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
           {messages.length === 0 && (
-            <p className="text-sm text-text-muted">
-              Manda sua dúvida — pode ser sobre uma matéria, um conceito ou
-              uma questão específica.
-            </p>
+            <p className="text-sm text-text-muted">Manda sua dúvida.</p>
           )}
 
           {messages.map((m, i) => (
@@ -97,7 +91,7 @@ export default function AssistenteChat() {
           {loading && (
             <div className="flex justify-start">
               <div className="max-w-[85%] rounded-lg bg-bg-hover px-3.5 py-2.5 text-sm text-text-muted">
-                Pensando...
+                {ASSISTANT_NAME} está pensando...
               </div>
             </div>
           )}

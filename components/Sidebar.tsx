@@ -14,7 +14,7 @@ interface SidebarProps {
 const BASE_ITEMS = [
   { href: "/", label: "Dashboard" },
   { href: "/simulado", label: "Novo Simulado" },
-  { href: "/assistente", label: "Assistente IA" },
+  { href: "/assistente", label: "NexAI" },
   { href: "/historico", label: "Histórico" },
   { href: "/conta", label: "Conta" },
 ];

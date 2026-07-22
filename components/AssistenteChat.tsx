@@ -5,7 +5,7 @@ import { apiFetch } from "@/lib/client-api";
 
 // Mantido em sincronia com ASSISTANT_NAME em lib/services/assistant.ts
 // (não importamos direto de lá para não misturar código client/server).
-const ASSISTANT_NAME = "Nex";
+const ASSISTANT_NAME = "NexAI";
 
 interface ChatMessage {
   role: "user" | "model";

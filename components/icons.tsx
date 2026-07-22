@@ -129,6 +129,14 @@ export function IconTarget({ className, style }: IconProps) {
   );
 }
 
+export function IconCheck({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} {...base}>
+      <path d="M5 12.5 9.5 17 19 7" />
+    </svg>
+  );
+}
+
 export function IconUsers({ className, style }: IconProps) {
   return (
     <svg className={className} style={style} {...base}>

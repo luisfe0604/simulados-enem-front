@@ -11,6 +11,7 @@ import {
   IconBookOpen,
   IconCalculator,
   IconTarget,
+  IconCheck,
 } from "@/components/icons";
 import type { ComponentType } from "react";
 
@@ -172,12 +173,13 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
     title: string;
     desc: string;
     icon: ComponentType<{ className?: string; style?: React.CSSProperties }>;
+    color: string;
   }[] = [
-    { key: "custom", title: "Personalizado", desc: "Escolha matérias e quantidade", icon: IconSliders },
-    { key: "wrong", title: "Revisão de erros", desc: "Refaça questões erradas", icon: IconRefreshCcw },
-    { key: "dia1", title: "Prova Dia 1", desc: "Linguagens + Humanas", icon: IconBookOpen },
-    { key: "dia2", title: "Prova Dia 2", desc: "Matemática + Natureza", icon: IconCalculator },
-    { key: "full", title: "Prova Completa", desc: "Simulado completo do ENEM", icon: IconTarget },
+    { key: "custom", title: "Personalizado", desc: "Escolha matérias e quantidade", icon: IconSliders, color: "var(--color-primary)" },
+    { key: "wrong", title: "Revisão de erros", desc: "Refaça questões erradas", icon: IconRefreshCcw, color: "var(--color-danger)" },
+    { key: "dia1", title: "Prova Dia 1", desc: "Linguagens + Humanas", icon: IconBookOpen, color: "var(--color-secondary)" },
+    { key: "dia2", title: "Prova Dia 2", desc: "Matemática + Natureza", icon: IconCalculator, color: "var(--color-success)" },
+    { key: "full", title: "Prova Completa", desc: "Simulado completo do ENEM", icon: IconTarget, color: "var(--color-ai)" },
   ];
 
   const answeredCount = Object.keys(answers).length;
@@ -217,8 +219,8 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
           )}
         </div>
         <div className="panel-body">
-          <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            {MODES.map((m) => {
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {MODES.map((m, i) => {
               const Icon = m.icon;
               const active = mode === m.key;
               return (
@@ -226,19 +228,45 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
                   key={m.key}
                   onClick={() => !simuladoAtivo && setMode(m.key)}
                   disabled={simuladoAtivo}
-                  className={`flex items-start gap-2.5 rounded-lg border p-3 text-left transition-colors ${
+                  style={
+                    {
+                      "--stagger": i,
+                      borderColor: active ? m.color : undefined,
+                      background: active
+                        ? `color-mix(in srgb, ${m.color} 7%, var(--color-bg-card))`
+                        : undefined,
+                      boxShadow: active
+                        ? `0 16px 32px -16px color-mix(in srgb, ${m.color} 55%, transparent)`
+                        : undefined,
+                    } as React.CSSProperties
+                  }
+                  className={`rise-in group relative flex flex-col gap-3 rounded-xl border p-4 text-left transition-all duration-200 ${
                     active
-                      ? "border-primary bg-primary-light"
-                      : "border-border-soft bg-bg-card hover:bg-bg-hover"
+                      ? ""
+                      : "border-border-soft bg-bg-card hover:-translate-y-0.5 hover:border-border hover:shadow-card"
                   } ${simuladoAtivo ? "cursor-not-allowed opacity-60" : ""}`}
                 >
-                  <Icon
-                    className="mt-0.5 h-[18px] w-[18px] shrink-0"
-                    style={{ color: active ? "var(--color-primary)" : "var(--color-text-muted)" }}
-                  />
+                  {active && (
+                    <span
+                      className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full text-white"
+                      style={{ background: m.color }}
+                      aria-hidden
+                    >
+                      <IconCheck className="h-3 w-3" />
+                    </span>
+                  )}
+                  <span
+                    className="flex h-10 w-10 items-center justify-center rounded-lg transition-colors"
+                    style={{
+                      background: active ? m.color : `color-mix(in srgb, ${m.color} 12%, transparent)`,
+                      color: active ? "#fff" : m.color,
+                    }}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </span>
                   <div>
-                    <div className="font-medium text-text-primary">{m.title}</div>
-                    <div className="text-xs text-text-muted">{m.desc}</div>
+                    <div className="font-semibold text-text-primary">{m.title}</div>
+                    <div className="mt-0.5 text-xs text-text-muted">{m.desc}</div>
                   </div>
                 </button>
               );

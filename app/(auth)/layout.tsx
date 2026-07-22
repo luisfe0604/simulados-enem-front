@@ -40,7 +40,7 @@ export default function AuthLayout({
 
       {/* Formulário */}
       <main className="flex flex-1 items-center justify-center bg-bg-page px-4 py-10">
-        <div className="w-full max-w-md rounded-2xl border border-border-soft bg-bg-card p-8 shadow-strong">
+        <div className="glow rise-in w-full max-w-md rounded-2xl border border-border-soft bg-bg-card p-8 shadow-strong">
           {children}
         </div>
       </main>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { apiFetch } from "@/lib/client-api";
+import { IconSpark } from "@/components/icons";
 
 // Mantido em sincronia com ASSISTANT_NAME em lib/services/assistant.ts
 // (não importamos direto de lá para não misturar código client/server).
@@ -62,10 +63,19 @@ export default function AssistenteChat() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-8rem)] max-w-3xl flex-col">
-      <h1 className="text-2xl font-bold text-text-primary">{ASSISTANT_NAME}</h1>
+    <div className="rise-in mx-auto flex h-[calc(100vh-8rem)] max-w-3xl flex-col">
+      <div className="flex items-center gap-2.5">
+        <span
+          className="flex h-9 w-9 items-center justify-center rounded-full text-white"
+          style={{ background: "linear-gradient(155deg, var(--color-ai), var(--color-ai-hover))" }}
+          aria-hidden
+        >
+          <IconSpark className="h-4.5 w-4.5" />
+        </span>
+        <h1 className="text-2xl font-bold text-text-primary">{ASSISTANT_NAME}</h1>
+      </div>
 
-      <div className="card mt-4 flex flex-1 flex-col overflow-hidden p-0">
+      <div className="glow card mt-4 flex flex-1 flex-col overflow-hidden p-0">
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
           {messages.length === 0 && (
             <p className="text-sm text-text-muted">Manda sua dúvida.</p>
@@ -77,10 +87,10 @@ export default function AssistenteChat() {
               className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
             >
               <div
-                className={`max-w-[85%] whitespace-pre-wrap rounded-lg px-3.5 py-2.5 text-sm leading-relaxed ${
+                className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                   m.role === "user"
                     ? "bg-primary text-white"
-                    : "bg-bg-hover text-text-primary"
+                    : "border border-border-soft bg-bg-hover text-text-primary"
                 }`}
               >
                 {m.text}
@@ -90,8 +100,19 @@ export default function AssistenteChat() {
 
           {loading && (
             <div className="flex justify-start">
-              <div className="max-w-[85%] rounded-lg bg-bg-hover px-3.5 py-2.5 text-sm text-text-muted">
-                {ASSISTANT_NAME} está pensando...
+              <div className="flex items-center gap-1.5 rounded-2xl border border-border-soft bg-bg-hover px-3.5 py-2.5 text-sm text-text-muted">
+                <span
+                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full"
+                  style={{ background: "var(--color-ai)", animationDelay: "0ms" }}
+                />
+                <span
+                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full"
+                  style={{ background: "var(--color-ai)", animationDelay: "120ms" }}
+                />
+                <span
+                  className="inline-block h-1.5 w-1.5 animate-bounce rounded-full"
+                  style={{ background: "var(--color-ai)", animationDelay: "240ms" }}
+                />
               </div>
             </div>
           )}
@@ -116,7 +137,7 @@ export default function AssistenteChat() {
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="btn btn-primary"
+            className="btn btn-ai"
           >
             Enviar
           </button>

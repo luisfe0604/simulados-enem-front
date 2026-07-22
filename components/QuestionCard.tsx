@@ -136,7 +136,7 @@ export default function QuestionCard({
           {onAskAI && (
             <button
               onClick={() => onAskAI(q)}
-              className="text-xs text-text-muted underline-offset-2 hover:text-primary hover:underline"
+              className="badge badge-ai transition-opacity hover:opacity-80"
             >
               Explicar com NexAI
             </button>

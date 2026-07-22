@@ -4,6 +4,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
 import Logo from "@/components/Logo";
+import {
+  IconGauge,
+  IconDocPencil,
+  IconSpark,
+  IconHistory,
+  IconUserCircle,
+  IconPlusSquare,
+  IconBarChart,
+  IconUsers,
+} from "@/components/icons";
+import type { ComponentType } from "react";
 
 interface SidebarProps {
   open: boolean;
@@ -11,18 +22,20 @@ interface SidebarProps {
   onNavigate: () => void;
 }
 
-const BASE_ITEMS = [
-  { href: "/", label: "Dashboard" },
-  { href: "/simulado", label: "Novo Simulado" },
-  { href: "/assistente", label: "NexAI" },
-  { href: "/historico", label: "Histórico" },
-  { href: "/conta", label: "Conta" },
+type NavEntry = { href: string; label: string; icon: ComponentType<{ className?: string }> };
+
+const BASE_ITEMS: NavEntry[] = [
+  { href: "/", label: "Dashboard", icon: IconGauge },
+  { href: "/simulado", label: "Novo Simulado", icon: IconDocPencil },
+  { href: "/assistente", label: "NexAI", icon: IconSpark },
+  { href: "/historico", label: "Histórico", icon: IconHistory },
+  { href: "/conta", label: "Conta", icon: IconUserCircle },
 ];
 
-const ADMIN_ITEMS = [
-  { href: "/questao", label: "Nova Questão" },
-  { href: "/dash-admin", label: "Dashboard Admin" },
-  { href: "/users", label: "Usuários" },
+const ADMIN_ITEMS: NavEntry[] = [
+  { href: "/questao", label: "Nova Questão", icon: IconPlusSquare },
+  { href: "/dash-admin", label: "Dashboard Admin", icon: IconBarChart },
+  { href: "/users", label: "Usuários", icon: IconUsers },
 ];
 
 export default function Sidebar({ open, isAdmin, onNavigate }: SidebarProps) {
@@ -107,11 +120,10 @@ export default function Sidebar({ open, isAdmin, onNavigate }: SidebarProps) {
 function NavItem({
   href,
   label,
+  icon: Icon,
   active,
   onNavigate,
-}: {
-  href: string;
-  label: string;
+}: NavEntry & {
   active: boolean;
   onNavigate: () => void;
 }) {
@@ -119,15 +131,9 @@ function NavItem({
     <Link
       href={href}
       onClick={onNavigate}
-      className={`relative rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-        active
-          ? "bg-primary-light text-primary"
-          : "text-text-primary hover:bg-bg-hover"
-      }`}
+      className={`nav-link ${active ? "nav-link-active" : ""}`}
     >
-      {active && (
-        <span className="absolute left-0 top-1/2 h-5 w-1 -translate-y-1/2 rounded-r bg-primary" />
-      )}
+      <Icon className="nav-icon h-[18px] w-[18px]" />
       {label}
     </Link>
   );

@@ -5,6 +5,14 @@ import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
 import QuestionCard, { type Question } from "@/components/QuestionCard";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
+import {
+  IconSliders,
+  IconRefreshCcw,
+  IconBookOpen,
+  IconCalculator,
+  IconTarget,
+} from "@/components/icons";
+import type { ComponentType } from "react";
 
 interface Subject {
   id: number;
@@ -159,12 +167,17 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
     subscription?.subscription_status ?? "",
   );
 
-  const MODES: { key: Mode; title: string; desc: string }[] = [
-    { key: "custom", title: "📚 Personalizado", desc: "Escolha matérias e quantidade" },
-    { key: "wrong", title: "🔁 Revisão de erros", desc: "Refaça questões erradas" },
-    { key: "dia1", title: "📝 Prova Dia 1", desc: "Linguagens + Humanas" },
-    { key: "dia2", title: "📐 Prova Dia 2", desc: "Matemática + Natureza" },
-    { key: "full", title: "🎯 Prova Completa", desc: "Simulado completo do ENEM" },
+  const MODES: {
+    key: Mode;
+    title: string;
+    desc: string;
+    icon: ComponentType<{ className?: string; style?: React.CSSProperties }>;
+  }[] = [
+    { key: "custom", title: "Personalizado", desc: "Escolha matérias e quantidade", icon: IconSliders },
+    { key: "wrong", title: "Revisão de erros", desc: "Refaça questões erradas", icon: IconRefreshCcw },
+    { key: "dia1", title: "Prova Dia 1", desc: "Linguagens + Humanas", icon: IconBookOpen },
+    { key: "dia2", title: "Prova Dia 2", desc: "Matemática + Natureza", icon: IconCalculator },
+    { key: "full", title: "Prova Completa", desc: "Simulado completo do ENEM", icon: IconTarget },
   ];
 
   const answeredCount = Object.keys(answers).length;
@@ -205,21 +218,31 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
         </div>
         <div className="panel-body">
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3">
-            {MODES.map((m) => (
-              <button
-                key={m.key}
-                onClick={() => !simuladoAtivo && setMode(m.key)}
-                disabled={simuladoAtivo}
-                className={`rounded-lg border p-3 text-left transition-colors ${
-                  mode === m.key
-                    ? "border-primary bg-primary-light"
-                    : "border-border-soft bg-bg-card hover:bg-bg-hover"
-                } ${simuladoAtivo ? "cursor-not-allowed opacity-60" : ""}`}
-              >
-                <div className="font-medium text-text-primary">{m.title}</div>
-                <div className="text-xs text-text-muted">{m.desc}</div>
-              </button>
-            ))}
+            {MODES.map((m) => {
+              const Icon = m.icon;
+              const active = mode === m.key;
+              return (
+                <button
+                  key={m.key}
+                  onClick={() => !simuladoAtivo && setMode(m.key)}
+                  disabled={simuladoAtivo}
+                  className={`flex items-start gap-2.5 rounded-lg border p-3 text-left transition-colors ${
+                    active
+                      ? "border-primary bg-primary-light"
+                      : "border-border-soft bg-bg-card hover:bg-bg-hover"
+                  } ${simuladoAtivo ? "cursor-not-allowed opacity-60" : ""}`}
+                >
+                  <Icon
+                    className="mt-0.5 h-[18px] w-[18px] shrink-0"
+                    style={{ color: active ? "var(--color-primary)" : "var(--color-text-muted)" }}
+                  />
+                  <div>
+                    <div className="font-medium text-text-primary">{m.title}</div>
+                    <div className="text-xs text-text-muted">{m.desc}</div>
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">

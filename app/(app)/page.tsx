@@ -56,10 +56,12 @@ export default function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <div className="flex flex-wrap items-end justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4 rise-in">
         <div>
           <p className="eyebrow">Seu progresso</p>
-          <h1 className="mt-1 text-3xl font-bold text-text-primary">Dashboard</h1>
+          <h1 className="mt-1 text-3xl font-bold text-text-primary sm:text-4xl">
+            Dashboard
+          </h1>
         </div>
         <button onClick={() => router.push("/simulado")} className="btn btn-primary">
           + Novo Simulado
@@ -67,7 +69,10 @@ export default function DashboardPage() {
       </div>
 
       {!isActive && (
-        <div className="mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border-soft border-l-4 border-l-primary bg-primary-light/50 px-5 py-4">
+        <div
+          className="rise-in mt-6 flex flex-wrap items-center justify-between gap-4 rounded-lg border border-border-soft border-l-4 border-l-primary bg-primary-light/50 px-5 py-4"
+          style={{ "--stagger": 1 } as React.CSSProperties}
+        >
           <div>
             <strong className="text-primary">Desbloqueie tudo</strong>
             <p className="text-sm text-text-muted">
@@ -80,8 +85,11 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Boletim: a média situada numa régua 0–100, como a nota de um exame. */}
-      <div className="panel mt-6">
+      {/* Boletim: a média como gauge radial — a assinatura visual da tela. */}
+      <div
+        className="glow rise-in panel mt-6"
+        style={{ "--stagger": 2 } as React.CSSProperties}
+      >
         <div className="panel-header">
           <span className="eyebrow">Boletim</span>
           <span className="text-xs text-text-muted">
@@ -90,65 +98,19 @@ export default function DashboardPage() {
               : "sem dados ainda"}
           </span>
         </div>
-        <div className="panel-body relative overflow-hidden">
-          <p className="text-sm text-text-muted">Média geral de acertos</p>
-          <div className="mt-1 flex items-baseline gap-1">
-            <span
-              className="font-mono text-6xl font-bold tabular-nums"
-              style={{
-                color: !hasData
-                  ? "var(--color-text-muted)"
-                  : stats.average >= 50
-                    ? "var(--color-success)"
-                    : "var(--color-danger)",
-              }}
-            >
-              {hasData ? stats.average.toFixed(0) : "—"}
-            </span>
-            <span className="text-2xl font-semibold text-text-muted">%</span>
-          </div>
-
-          {/* Régua 0–100 com marcador na média e o corte de 50%. */}
-          <div className="mt-5 max-w-md">
-            <div className="relative h-2 w-full rounded-full bg-bg-hover">
-              <div className="absolute left-1/2 top-1/2 h-3.5 w-px -translate-x-1/2 -translate-y-1/2 bg-border" />
-              <div
-                className="absolute top-1/2 h-4 w-1.5 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-sm"
-                style={{
-                  left: `${hasData ? Math.min(Math.max(stats.average, 0), 100) : 0}%`,
-                  background: !hasData
-                    ? "var(--color-border)"
-                    : stats.average >= 50
-                      ? "var(--color-success)"
-                      : "var(--color-danger)",
-                }}
-              />
-            </div>
-            <div className="mt-1.5 flex justify-between font-mono text-[0.625rem] text-text-muted">
-              <span>0</span>
-              <span>50</span>
-              <span>100</span>
-            </div>
-          </div>
-
-          <div
-            aria-hidden
-            className="watermark-number absolute -bottom-6 -right-2 text-[7rem]"
-            style={{ color: "color-mix(in srgb, var(--color-text-primary) 4%, transparent)" }}
-          >
-            {hasData ? stats.average.toFixed(0) : "0"}
-          </div>
+        <div className="panel-body">
+          <ScoreGauge value={hasData ? stats.average : null} />
         </div>
       </div>
 
       {/* Indicadores */}
       <div className="mt-4 grid grid-cols-3 gap-3 sm:gap-4">
-        <StatCard eyebrow="Total" label="Simulados" value={String(stats.total)} />
-        <StatCard eyebrow="Volume" label="Questões" value={String(stats.totalQuestions)} />
-        <StatCard eyebrow="Ritmo" label="Seg / questão" value={`${stats.avgTimePerQuestion}s`} />
+        <StatCard eyebrow="Total" label="Simulados" value={String(stats.total)} stagger={3} />
+        <StatCard eyebrow="Volume" label="Questões" value={String(stats.totalQuestions)} stagger={4} />
+        <StatCard eyebrow="Ritmo" label="Seg / questão" value={`${stats.avgTimePerQuestion}s`} stagger={5} />
       </div>
 
-      <div className="mt-8">
+      <div className="rise-in mt-8" style={{ "--stagger": 6 } as React.CSSProperties}>
         <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-text-primary">Últimos simulados</h2>
           {hasData && (
@@ -209,17 +171,82 @@ export default function DashboardPage() {
   );
 }
 
+// Gauge semicircular 0–100: o arco preenche da esquerda pro fim conforme a
+// média, com o número no centro — a mesma lógica de "nota de prova" do resto
+// do app, só que como forma em vez de régua.
+function ScoreGauge({ value }: { value: number | null }) {
+  const [animated, setAnimated] = useState(0);
+  const hasData = value !== null;
+  const clamped = Math.min(Math.max(value ?? 0, 0), 100);
+  const good = clamped >= 50;
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setAnimated(hasData ? clamped : 0));
+    return () => cancelAnimationFrame(id);
+  }, [clamped, hasData]);
+
+  const r = 84;
+  const circumference = Math.PI * r;
+  const offset = circumference * (1 - animated / 100);
+  const color = !hasData
+    ? "var(--color-border)"
+    : good
+      ? "var(--color-success)"
+      : "var(--color-danger)";
+
+  return (
+    <div className="flex flex-col items-center">
+      <div className="relative w-full max-w-[280px]">
+        <svg viewBox="0 0 208 118" className="w-full overflow-visible">
+          <path d="M16 108 A 84 84 0 0 1 192 108" className="gauge-track" />
+          <path
+            d="M16 108 A 84 84 0 0 1 192 108"
+            className="gauge-progress"
+            style={{
+              stroke: color,
+              strokeDasharray: circumference,
+              strokeDashoffset: offset,
+            }}
+          />
+        </svg>
+        <div className="absolute inset-x-0 bottom-0 flex flex-col items-center pb-1">
+          <div className="flex items-baseline gap-1">
+            <span
+              className="font-mono text-5xl font-bold tabular-nums transition-colors"
+              style={{ color }}
+            >
+              {hasData ? clamped.toFixed(0) : "—"}
+            </span>
+            <span className="text-xl font-semibold text-text-muted">%</span>
+          </div>
+          <p className="mt-0.5 text-xs text-text-muted">média de acertos</p>
+        </div>
+      </div>
+      <div className="mt-1 flex w-full max-w-[280px] justify-between px-1 font-mono text-[0.625rem] text-text-muted">
+        <span>0</span>
+        <span>50</span>
+        <span>100</span>
+      </div>
+    </div>
+  );
+}
+
 function StatCard({
   eyebrow,
   label,
   value,
+  stagger,
 }: {
   eyebrow: string;
   label: string;
   value: string;
+  stagger: number;
 }) {
   return (
-    <div className="card p-4">
+    <div
+      className="rise-in card p-4"
+      style={{ "--stagger": stagger } as React.CSSProperties}
+    >
       <p className="eyebrow">{eyebrow}</p>
       <p className="mt-2 font-mono text-3xl font-bold text-text-primary tabular-nums">
         {value}

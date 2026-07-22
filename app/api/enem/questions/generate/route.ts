@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     const questions = await generateQuestions({
       subject_id: searchParams.get("subject_id"),
       limit: searchParams.get("limit"),
+      difficulty: searchParams.get("difficulty"),
     });
     return NextResponse.json(questions);
   });

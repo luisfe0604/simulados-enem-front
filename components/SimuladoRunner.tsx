@@ -24,6 +24,12 @@ const SUBJECT_LABELS: Record<string, string> = {
   matematica: "Matemática",
 };
 
+const DIFFICULTY_LABELS: Record<string, string> = {
+  "1": "Fácil",
+  "2": "Médio",
+  "3": "Difícil",
+};
+
 export default function SimuladoRunner({ retryId }: { retryId?: string }) {
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
@@ -32,6 +38,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
   const [limit, setLimit] = useState(10);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [subject, setSubject] = useState("");
+  const [difficulty, setDifficulty] = useState("");
   const [elapsed, setElapsed] = useState(0);
   const [mode, setMode] = useState<Mode>("custom");
   const [showNavigator, setShowNavigator] = useState(false);
@@ -84,6 +91,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
     const params = new URLSearchParams();
     if (limit) params.append("limit", String(limit));
     if (subject) params.append("subject_id", subject);
+    if (difficulty) params.append("difficulty", difficulty);
     const data = await apiFetch<Question[]>(
       `/enem/questions/generate?${params.toString()}`,
     );
@@ -227,6 +235,19 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
               {subjects.map((s) => (
                 <option key={s.id} value={s.id}>
                   {SUBJECT_LABELS[s.name] || s.name}
+                </option>
+              ))}
+            </select>
+            <select
+              value={difficulty}
+              disabled={simuladoAtivo}
+              onChange={(e) => setDifficulty(e.target.value)}
+              className="input w-auto"
+            >
+              <option value="">Todas as Dificuldades</option>
+              {Object.entries(DIFFICULTY_LABELS).map(([value, label]) => (
+                <option key={value} value={value}>
+                  {label}
                 </option>
               ))}
             </select>

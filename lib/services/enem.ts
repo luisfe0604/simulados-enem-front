@@ -97,9 +97,11 @@ export async function createQuestion(data: {
 export async function generateQuestions({
   subject_id,
   limit,
+  difficulty,
 }: {
   subject_id?: string | null;
   limit?: string | null;
+  difficulty?: string | null;
 }) {
   const values: unknown[] = [];
   const conditions: string[] = [];
@@ -115,6 +117,13 @@ export async function generateQuestions({
     query += ` JOIN public.question_subjects_enem qs ON qs.question_id = q.id`;
     conditions.push(`qs.subject_id = $${index}`);
     values.push(parseInt(subject_id, 10));
+    index++;
+  }
+
+  const difficultyValue = difficulty ? parseInt(difficulty, 10) : NaN;
+  if ([1, 2, 3].includes(difficultyValue)) {
+    conditions.push(`q.difficulty = $${index}`);
+    values.push(difficultyValue);
     index++;
   }
 

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
 import QuestionCard, { type Question } from "@/components/QuestionCard";
+import { PENDING_QUESTION_KEY } from "@/components/AssistenteChat";
 
 interface Simulado {
   id: number;
@@ -50,6 +51,30 @@ export default function HistoricoPage() {
       ),
     );
     setExpanded(simuladoId);
+  }
+
+  function askAI(q: Question) {
+    const options = ["a", "b", "c", "d", "e"]
+      .map((letter) => {
+        const text = q[`option_${letter}` as keyof Question];
+        return text ? `${letter.toUpperCase()}) ${text}` : null;
+      })
+      .filter(Boolean)
+      .join("\n");
+
+    const message = [
+      "Pode me explicar essa questão?",
+      "",
+      q.statement,
+      "",
+      options,
+      q.correct_option ? `\nGabarito: ${q.correct_option}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    sessionStorage.setItem(PENDING_QUESTION_KEY, message);
+    router.push("/assistente");
   }
 
   function formatDuration(seconds: number) {
@@ -214,7 +239,7 @@ export default function HistoricoPage() {
                 {expanded === s.id && s.questions && (
                   <div className="mt-3">
                     {s.questions.map((q, i) => (
-                      <QuestionCard key={q.question_id} q={q} index={i} result disabled />
+                      <QuestionCard key={q.question_id} q={q} index={i} result disabled onAskAI={askAI} />
                     ))}
                   </div>
                 )}
@@ -288,7 +313,7 @@ export default function HistoricoPage() {
                       <tr>
                         <td colSpan={6} className="bg-bg-page p-4">
                           {s.questions.map((q, i) => (
-                            <QuestionCard key={q.question_id} q={q} index={i} result disabled />
+                            <QuestionCard key={q.question_id} q={q} index={i} result disabled onAskAI={askAI} />
                           ))}
                         </td>
                       </tr>

@@ -21,6 +21,7 @@ interface QuestionCardProps {
   result?: unknown;
   onSelect?: (questionId: number, option: string) => void;
   disabled?: boolean;
+  onAskAI?: (q: Question) => void;
 }
 
 // Formatação do enunciado portada 1:1 do componente React antigo (parse de
@@ -119,6 +120,7 @@ export default function QuestionCard({
   result,
   onSelect,
   disabled,
+  onAskAI,
 }: QuestionCardProps) {
   const { intro, question } = splitStatement(parseQuotes(q.statement));
   const qid = (q.id ?? q.question_id) as number;
@@ -130,9 +132,19 @@ export default function QuestionCard({
           <span className="marker">{String(index + 1).padStart(2, "0")}</span>
           <span className="eyebrow">Questão</span>
         </div>
-        {q.exam_name && (
-          <span className="text-xs text-text-muted">{q.exam_name}</span>
-        )}
+        <div className="flex items-center gap-3">
+          {onAskAI && (
+            <button
+              onClick={() => onAskAI(q)}
+              className="text-xs text-text-muted underline-offset-2 hover:text-primary hover:underline"
+            >
+              🤖 Explicar com IA
+            </button>
+          )}
+          {q.exam_name && (
+            <span className="text-xs text-text-muted">{q.exam_name}</span>
+          )}
+        </div>
       </div>
 
       <div className="space-y-2 leading-relaxed text-text-primary [&_img]:my-2 [&_img]:max-w-full">

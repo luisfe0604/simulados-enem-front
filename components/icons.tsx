@@ -137,6 +137,16 @@ export function IconCheck({ className, style }: IconProps) {
   );
 }
 
+export function IconFeather({ className, style }: IconProps) {
+  return (
+    <svg className={className} style={style} {...base}>
+      <path d="M20 4c-6 0-13 3-15.5 10.5C3.4 17.9 3 20 3 20s2.1-.4 5.5-1.5C16 16 19 9 19 4Z" />
+      <path d="M13 11 4 20" />
+      <path d="M9 15h4" />
+    </svg>
+  );
+}
+
 export function IconUsers({ className, style }: IconProps) {
   return (
     <svg className={className} style={style} {...base}>

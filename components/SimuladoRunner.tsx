@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch } from "@/lib/client-api";
 import QuestionCard, { type Question } from "@/components/QuestionCard";
+import RedacaoRunner from "@/components/RedacaoRunner";
 import { useBodyScrollLock } from "@/lib/useBodyScrollLock";
 import {
   IconSliders,
@@ -12,6 +13,7 @@ import {
   IconCalculator,
   IconTarget,
   IconCheck,
+  IconFeather,
 } from "@/components/icons";
 import type { ComponentType } from "react";
 
@@ -24,7 +26,7 @@ interface Subscription {
   subscription_status?: string;
 }
 
-type Mode = "custom" | "wrong" | "dia1" | "dia2" | "full";
+type Mode = "custom" | "wrong" | "dia1" | "dia2" | "full" | "redacao";
 
 const SUBJECT_LABELS: Record<string, string> = {
   "ciencias-humanas": "Ciências Humanas",
@@ -180,6 +182,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
     { key: "dia1", title: "Prova Dia 1", desc: "Linguagens + Humanas", icon: IconBookOpen, color: "var(--color-secondary)" },
     { key: "dia2", title: "Prova Dia 2", desc: "Matemática + Natureza", icon: IconCalculator, color: "var(--color-success)" },
     { key: "full", title: "Prova Completa", desc: "Simulado completo do ENEM", icon: IconTarget, color: "var(--color-ai)" },
+    { key: "redacao", title: "Redação", desc: "Escreva e receba a correção do NexAI", icon: IconFeather, color: "var(--color-warm)" },
   ];
 
   const answeredCount = Object.keys(answers).length;
@@ -273,6 +276,11 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
             })}
           </div>
 
+          {mode === "redacao" ? (
+            <div className="mt-4">
+              <RedacaoRunner />
+            </div>
+          ) : (
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {mode === "custom" && (
           <>
@@ -348,6 +356,7 @@ export default function SimuladoRunner({ retryId }: { retryId?: string }) {
               </button>
             )}
           </div>
+          )}
         </div>
       </div>
 

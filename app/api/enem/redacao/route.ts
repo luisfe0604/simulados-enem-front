@@ -3,6 +3,11 @@ import { handleRoute, badRequest } from "@/lib/api";
 import { requireActiveSubscription } from "@/lib/authz";
 import { gradeEssay } from "@/lib/services/essay";
 
+// gradeEssay já tem retry interno pra picos de sobrecarga do Gemini (até ~4
+// tentativas de 12s cada) — sem isso, o timeout padrão da function cortaria
+// a correção no meio de um retry legítimo.
+export const maxDuration = 60;
+
 const MAX_TEMA_LENGTH = 300;
 const MIN_TEXTO_LENGTH = 50;
 const MAX_TEXTO_LENGTH = 8000;

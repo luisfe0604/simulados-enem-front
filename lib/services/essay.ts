@@ -65,26 +65,39 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Uma tentativa "presa" (o modelo demora ~20s só pra devolver 503) não pode
+// consumir sozinha o orçamento de tempo da function — por isso cada tentativa
+// tem um timeout curto próprio, e o retry conta com esse tempo liberado.
+const ATTEMPT_TIMEOUT_MS = 12_000;
+const MAX_ATTEMPTS = 4;
+
 async function callGemini(apiKey: string, tema: string, texto: string) {
-  return fetch(`${GEMINI_URL}?key=${apiKey}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: `TEMA: ${tema}\n\nTEXTO:\n${texto}` }],
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), ATTEMPT_TIMEOUT_MS);
+  try {
+    return await fetch(`${GEMINI_URL}?key=${apiKey}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION }] },
+        contents: [
+          {
+            role: "user",
+            parts: [{ text: `TEMA: ${tema}\n\nTEXTO:\n${texto}` }],
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 1600,
+          temperature: 0.3,
+          responseMimeType: "application/json",
+          responseSchema: RESPONSE_SCHEMA,
         },
-      ],
-      generationConfig: {
-        maxOutputTokens: 1600,
-        temperature: 0.3,
-        responseMimeType: "application/json",
-        responseSchema: RESPONSE_SCHEMA,
-      },
-    }),
-  });
+      }),
+    });
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 export async function gradeEssay(tema: string, texto: string): Promise<EssayGrade> {
@@ -93,14 +106,25 @@ export async function gradeEssay(tema: string, texto: string): Promise<EssayGrad
     throw new Error("GEMINI_API_KEY não configurada");
   }
 
-  // 503 (UNAVAILABLE) é transitório e a própria documentação do Gemini
-  // recomenda retry — sem isso, picos de demanda derrubam a correção à toa.
-  let res = await callGemini(apiKey, tema, texto);
-  for (let attempt = 0; !res.ok && res.status === 503 && attempt < 2; attempt++) {
-    await sleep(800 * (attempt + 1));
-    res = await callGemini(apiKey, tema, texto);
+  // 503 (UNAVAILABLE) e timeout são transitórios — a própria documentação do
+  // Gemini recomenda retry. Sem isso, picos de demanda derrubam a correção
+  // à toa (uma tentativa presa já chega a levar ~20s só pra falhar).
+  let res: Response | null = null;
+  let lastError: unknown = null;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    try {
+      res = await callGemini(apiKey, tema, texto);
+      if (res.ok || res.status !== 503) break;
+    } catch (err) {
+      lastError = err;
+      res = null;
+    }
+    await sleep(400 * (attempt + 1));
   }
 
+  if (!res) {
+    throw new Error(`Gemini não respondeu a tempo: ${String(lastError)}`);
+  }
   if (!res.ok) {
     const body = await res.text().catch(() => "");
     throw new Error(`Gemini respondeu ${res.status}: ${body.slice(0, 200)}`);
